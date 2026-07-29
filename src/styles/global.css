@@ -52,7 +52,7 @@ button {
   font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--c-accent);
+  color: var(--c-accent-ink);
 }
 
 .h-display {
@@ -75,6 +75,17 @@ section[data-section] {
 }
 
 .section-alt { background: var(--c-bg-alt); }
+
+.section-light {
+  background: var(--c-bg-light);
+  color: var(--c-text-on-light);
+  --c-light: var(--c-text-on-light);
+  --c-text: var(--c-text-on-light);
+  --c-text-dim: var(--c-text-dim-on-light);
+  --c-text-faint: var(--c-text-faint-on-light);
+  --c-line: var(--c-line-on-light);
+  --c-accent-ink: var(--c-accent-strong);
+}
 
 /* Scroll-reveal base state — GSAP flips these via .is-visible */
 [data-reveal] {

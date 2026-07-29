@@ -14,6 +14,28 @@
   --c-light: #f4f5f6;
   --c-light-alt: #e7e9ec;
 
+  /* Light-section palette — used by .section-light to alternate the rhythm */
+  --c-bg-light: #c4c4c4;
+  --c-surface-on-light: #ffffff;
+  --c-text-on-light: #16181b;
+  --c-text-dim-on-light: #494d52;
+  --c-text-faint-on-light: #494c4f;
+  --c-line-on-light: #a3a3a3;
+  --c-accent-strong: #094b74;
+
+  /* Fixed dark-theme anchors — let a dark tile nested inside a light
+     section reset its own text back to "always dark" */
+  --c-text-dark: #eef0f2;
+  --c-text-dim-dark: #9aa1ab;
+  --c-text-faint-dark: #656c76;
+  --c-light-dark: #f4f5f6;
+  --c-line-dark: #2c3038;
+
+  /* Theme-aware indirection for accent-as-text uses (e.g. .kicker) that
+     must not follow --c-accent itself, since that also drives high-contrast
+     text-on-accent buttons and must stay the bright blue */
+  --c-accent-ink: var(--c-accent);
+
   /* Typography roles (see fonts.css for delivered weights) */
   --font-display: 'Eurostile Extended', 'Arial Narrow', sans-serif; /* TODO: swap for Conthrax Heavy */
   --font-slab: Georgia, 'Times New Roman', serif; /* TODO: swap for Arturito Slab Bold */

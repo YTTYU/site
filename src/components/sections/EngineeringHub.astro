@@ -31,7 +31,7 @@ import {
 const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as const;
 ---
 
-<section class="engineering" id="engineering" data-section="engineering">
+<section class="engineering section-light" id="engineering" data-section="engineering">
   <div class="container eng-grid">
     <aside class="eng-nav" aria-label="Навигация по характеристикам">
       <p class="eng-nav-title">Конструктивные и эксплуатационные свойства</p>
@@ -284,7 +284,7 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
     transition: color var(--dur-fast) var(--ease-out);
     display: block;
   }
-  .eng-nav a.active { color: var(--c-accent); }
+  .eng-nav a.active { color: var(--c-accent-ink); }
   .eng-nav a:hover { color: var(--c-text); }
 
   .eng-content { display: flex; flex-direction: column; gap: calc(var(--space-section) * 0.9); }
@@ -321,6 +321,13 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
     background: var(--c-bg-panel);
   }
   .redundancy { border: 1px solid var(--c-line); padding: var(--space-md); background: var(--c-bg-panel); }
+  .capacity-card, .mini-card, .redundancy, .attach-card {
+    --c-light: var(--c-light-dark);
+    --c-text: var(--c-text-dark);
+    --c-text-dim: var(--c-text-dim-dark);
+    --c-text-faint: var(--c-text-faint-dark);
+    --c-line: var(--c-line-dark);
+  }
   .redundancy-list { display: flex; flex-direction: column; gap: 0.8em; margin-top: 0.6em; }
   .redundancy-list li { font-size: var(--fs-small); color: var(--c-text-dim); }
   .redundancy-list strong { color: var(--c-text); }
