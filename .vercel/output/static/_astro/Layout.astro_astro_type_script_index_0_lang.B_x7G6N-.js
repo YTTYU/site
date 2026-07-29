@@ -1,1 +1,0 @@
-import{t as e}from"./core.BgXjMlR1.js";function t(){e(document),window.dispatchEvent(new CustomEvent(`site:sections-ready`))}document.addEventListener(`astro:page-load`,t),document.addEventListener(`astro:after-swap`,()=>{});

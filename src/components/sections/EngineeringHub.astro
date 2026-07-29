@@ -352,14 +352,6 @@ const icons: Record<string, string> = {
           <Image src={hydroImg} alt="Консоль «ГИДРО AUX» в кабине" width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
         </div>
 
-        <div class="attach-cards" data-reveal>
-          {equipmentPhotos.slice(1).map((p) => (
-            <figure class="attach-card">
-              <Image src={p.img} alt={p.caption} width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
-              <figcaption>{p.caption}</figcaption>
-            </figure>
-          ))}
-        </div>
       </article>
 
       <!-- 10. Обслуживание -->
@@ -538,6 +530,140 @@ const icons: Record<string, string> = {
   .advantages-row { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-lg); align-items: start; }
   .advantages-media img { width: 100%; height: auto; border: 1px solid var(--c-line); }
 
+  /* Tracks: reference composition — clean light field, raw track photo and two material cards */
+  #eng-tracks {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(350px, 0.8fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 0;
+    row-gap: 0;
+    background: var(--c-bg-light);
+  }
+  #eng-tracks > .h3 {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 104px;
+    margin: 0;
+    padding: 1.9rem 2.5rem;
+    background: var(--c-bg-light);
+    color: var(--c-text-on-light);
+    border-top: none;
+  }
+  #eng-tracks > .media-hero {
+    grid-column: 1;
+    grid-row: 2;
+    height: 610px;
+    min-height: 0;
+    margin: 0;
+    border: none;
+    background: var(--c-bg-light);
+    align-self: start;
+    align-items: flex-start;
+  }
+  #eng-tracks > .tread-row {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0 0.9rem 0.9rem;
+    align-self: stretch;
+    background: var(--c-bg-light);
+  }
+  #eng-tracks > .advantages-row { grid-column: 1 / -1; margin: var(--space-lg) 0 0; }
+  #eng-tracks .media-hero-img { object-fit: cover; object-position: 18% center; }
+  #eng-tracks .media-hero-overlay { display: none; }
+  #eng-tracks .media-hero-content {
+    position: absolute;
+    top: 46px;
+    right: 7%;
+    bottom: auto;
+    left: auto;
+    width: min(62%, 420px);
+    max-width: none;
+    padding: 1.25rem 1.6rem;
+    background: rgba(130, 130, 130, 0.92);
+  }
+  #eng-tracks .media-hero-content p { font-size: clamp(0.9rem, 1.22vw, 1.15rem); line-height: 1.5; color: #f1f1f1; }
+  #eng-tracks .made-in-russia { width: 58px; bottom: 1.25rem; left: 1.25rem; z-index: 2; filter: grayscale(1) contrast(1.5); }
+  #eng-tracks .tread-col { display: flex; flex-direction: column; min-width: 0; padding: 0 0 0.7rem; background: #fff; border: none; }
+  #eng-tracks .tread-photo { margin: 0; border: none; }
+  #eng-tracks .tread-photo img { width: 100%; height: clamp(230px, 22vw, 320px); object-fit: contain; object-position: center top; background: #fff; }
+  #eng-tracks .tread-pill {
+    display: block;
+    width: calc(100% - 1.4rem);
+    margin: 0.65rem 0.7rem 1.35rem;
+    padding: 0.7rem 0.45rem;
+    border: none;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    color: #4e4e4e;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: none;
+  }
+  #eng-tracks .body-p {
+    flex: 1;
+    margin: 0 0.7rem;
+    padding: 0.85rem 0.7rem 0.5rem;
+    background: #fff;
+    color: #73777c;
+    font-size: 0.67rem;
+    line-height: 1.35;
+  }
+  #eng-tracks .tag {
+    margin: 0 0.7rem;
+    padding: 0 0.7rem 0.75rem;
+    border: none;
+    background: #fff;
+    color: #73777c;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    line-height: 1.35;
+  }
+  #eng-tracks .tread-detail { width: calc(100% - 1.4rem); height: 116px; margin: 0.55rem 0.7rem 0; border: none; }
+  #eng-tracks .advantages-media img { border: none; }
+
+  /* The large track image is a section background, not a separate left column. */
+  #eng-tracks {
+    position: relative;
+    min-height: 720px;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  #eng-tracks > .media-hero {
+    position: absolute;
+    z-index: 1;
+    inset: 104px 0 auto;
+    width: auto;
+    height: 660px;
+    min-height: 0;
+    margin: 0;
+    background: transparent;
+    align-self: auto;
+  }
+  #eng-tracks .media-hero-img { object-fit: cover; object-position: left bottom; }
+  #eng-tracks > .h3,
+  #eng-tracks > .tread-row,
+  #eng-tracks > .advantages-row { position: relative; z-index: 2; }
+  #eng-tracks > .h3 { background: rgba(243, 242, 239, 0.82); }
+  #eng-tracks > .tread-row { background: transparent; }
+  #eng-tracks .tread-col { background: rgba(255, 255, 255, 0.72); }
+  #eng-tracks .tread-pill,
+  #eng-tracks .body-p,
+  #eng-tracks .tag { background: rgba(255, 255, 255, 0.78); }
+  #eng-tracks .media-hero-content {
+    z-index: 2;
+    top: 46px;
+    right: auto;
+    left: 14%;
+    width: min(42%, 420px);
+    background: rgba(130, 130, 130, 0.83);
+  }
+
   /* Icon strip / icon bullet list — shared across amphibious, cargo, equipment, maintenance */
   .icon { width: 22px; height: 22px; flex: none; color: var(--c-accent-ink); }
   .stat-strip {
@@ -592,6 +718,10 @@ const icons: Record<string, string> = {
     .two-col, .two-col.reverse { grid-template-columns: 1fr; }
     .attach-cards { grid-template-columns: 1fr 1fr; }
     .tread-row, .advantages-row, .caption-grid { grid-template-columns: 1fr; }
+    #eng-tracks { display: block; }
+    #eng-tracks > .h3 { min-height: 0; padding: 1.5rem; margin: 0; }
+    #eng-tracks > .media-hero { position: relative; inset: auto; height: 420px; min-height: 0; margin-bottom: var(--space-md); }
+    #eng-tracks > .tread-row { grid-template-columns: 1fr 1fr; padding: 0 0.75rem 0.75rem; margin: 0; }
     .photo-grid { grid-template-columns: repeat(2, 1fr); }
     .tight-gallery { grid-template-columns: repeat(4, 1fr); }
   }
