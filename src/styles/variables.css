@@ -15,13 +15,13 @@
   --c-light-alt: #e7e9ec;
 
   /* Light-section palette — used by .section-light to alternate the rhythm */
-  --c-bg-light: #c4c4c4;
+  --c-bg-light: #f3f2ef;
   --c-surface-on-light: #ffffff;
   --c-text-on-light: #16181b;
-  --c-text-dim-on-light: #494d52;
-  --c-text-faint-on-light: #494c4f;
-  --c-line-on-light: #a3a3a3;
-  --c-accent-strong: #094b74;
+  --c-text-dim-on-light: #53575d;
+  --c-text-faint-on-light: #83878d;
+  --c-line-on-light: #dedad3;
+  --c-accent-strong: #0d6aa8;
 
   /* Fixed dark-theme anchors — let a dark tile nested inside a light
      section reset its own text back to "always dark" */

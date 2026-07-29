@@ -1,18 +1,68 @@
 ---
 import { Image } from 'astro:assets';
-import weldImg from '../../assets/images/construction/weld-detail.png';
-import badgeImg from '../../assets/images/construction/badge-macro.png';
-import treadOffroad from '../../assets/images/tracks/tread-offroad.png';
-import treadIndustrial from '../../assets/images/tracks/tread-industrial.png';
-import suspensionImg from '../../assets/images/handling/suspension-detail.png';
-import amphibiousImg from '../../assets/images/handling/front-studio.png';
+
+// Конструктив
+import construction1 from '../../assets/images/construction/construction-1.jpg';
+import construction2 from '../../assets/images/construction/construction-2.jpg';
+import construction3 from '../../assets/images/construction/construction-3.jpeg';
+import construction4 from '../../assets/images/construction/construction-4.png';
+import construction5 from '../../assets/images/construction/construction-5.png';
+import construction6 from '../../assets/images/construction/construction-6.jpeg';
+import construction7 from '../../assets/images/construction/construction-7.jpg';
+import construction8 from '../../assets/images/construction/construction-8.jpeg';
+
+// Резинокордовые гусеницы
+import tracksTexture from '../../assets/images/tracks/tracks-texture.png';
+import treadOffroadFull from '../../assets/images/tracks/tread-offroad-full.png';
+import treadIndustrialFull from '../../assets/images/tracks/tread-industrial-full.png';
+import treadOffroadDetail from '../../assets/images/tracks/tread-offroad-detail.jpg';
+import treadIndustrialDetail from '../../assets/images/tracks/tread-industrial-detail.png';
+import tensionDiagram from '../../assets/images/tracks/tension-diagram.png';
+
+// Ходовые качества
+import handlingHero from '../../assets/images/handling/handling-hero.png';
+import handling2 from '../../assets/images/handling/handling-2.png';
+import handling3 from '../../assets/images/handling/handling-3.jpeg';
+
+// Амфибийность
+import amphibiousHero from '../../assets/images/amphibious/amphibious-hero.png';
+
+// Трансмиссия
 import engineImg from '../../assets/images/transmission/engine-bay.png';
-import transportImg from '../../assets/images/transport/extended-frame.png';
-import cabinDetailImg from '../../assets/images/ergonomics/cabin-detail.png';
-import cabinSeatImg from '../../assets/images/ergonomics/cabin-seat.png';
+import engineRender from '../../assets/images/transmission/engine-render.png';
+
+// Перевозка грузов
+import cargoHero from '../../assets/images/cargo/cargo-hero.png';
+import cargo2 from '../../assets/images/cargo/cargo-2.png';
+
+// Транспортировка
+import transport2 from '../../assets/images/transport/transport-2.jpeg';
+import transport3 from '../../assets/images/transport/transport-3.jpeg';
+import transport4 from '../../assets/images/transport/transport-4.jpeg';
+import transport5 from '../../assets/images/transport/transport-5.jpg';
+
+// Эргономика
+import gallery26 from '../../assets/images/ergonomics/gallery-26.png';
+import gallery27 from '../../assets/images/ergonomics/gallery-27.png';
+import gallery30 from '../../assets/images/ergonomics/gallery-30.png';
+import gallery31 from '../../assets/images/ergonomics/gallery-31.png';
+import gallery32 from '../../assets/images/ergonomics/gallery-32.png';
+import gallery33 from '../../assets/images/ergonomics/gallery-33.png';
+import gallery34 from '../../assets/images/ergonomics/gallery-34.png';
+import gallery35 from '../../assets/images/ergonomics/gallery-35.png';
+import gallery36 from '../../assets/images/ergonomics/gallery-36.png';
+import gallery39 from '../../assets/images/ergonomics/gallery-39.png';
+
+// Дополнительное оборудование
 import hydroImg from '../../assets/images/equipment/hydro-aux-console.png';
 import drillingImg from '../../assets/images/equipment/drilling-rig.png';
 import tentImg from '../../assets/images/equipment/tent-cover.png';
+import equipment2 from '../../assets/images/equipment/equipment-2.png';
+import equipment3 from '../../assets/images/equipment/equipment-3.png';
+
+// Обслуживание
+import maintenance2 from '../../assets/images/maintenance/maintenance-2.png';
+import maintenance3 from '../../assets/images/maintenance/maintenance-3.png';
 
 import {
   construction,
@@ -28,7 +78,49 @@ import {
   engineeringNav,
 } from '../../content/data/copy';
 
-const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as const;
+const constructionPhotos = [construction1, construction2, construction3, construction4, construction5, construction6, construction7, construction8];
+const transportPhotos = [transport2, transport3, transport4, transport5];
+const galleryPhotos = [gallery34, gallery26, gallery27, gallery30, gallery31, gallery32, gallery33, gallery35, gallery36, gallery39];
+
+const equipmentSummary = [
+  { icon: 'wrench', text: equipment.hydro.title },
+  { icon: 'truck', text: equipment.frame.title },
+  { icon: 'package', text: equipment.mounts.title },
+  { icon: 'shield', text: equipment.outriggers.title },
+];
+const equipmentPhotos = [
+  { img: hydroImg, caption: 'Консоль «ГИДРО AUX» в кабине' },
+  { img: drillingImg, caption: 'P-4 с буровой установкой' },
+  { img: tentImg, caption: 'P-4 с тентовым укрытием кузова' },
+  { img: equipment2, caption: 'Дополнительное оборудование' },
+  { img: equipment3, caption: 'Дополнительное оборудование' },
+];
+
+const redundancyIcons: Record<string, string> = {
+  'Охлаждение': 'thermometer',
+  'Отопление': 'thermometer',
+  'Питание': 'plug',
+  'Топливо': 'droplet',
+  'Откачка воды': 'ship',
+};
+
+// Small line-icon set sourced from Lucide (ISC license), redrawn to match the
+// site's existing stroke="currentColor" chevron-icon convention.
+const icons: Record<string, string> = {
+  droplet: '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />',
+  weight: '<circle cx="12" cy="5" r="3" /><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z" />',
+  ship: '<path d="M12 10.189V14" /><path d="M12 2v3" /><path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6" /><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-8.188-3.639a2 2 0 0 0-1.624 0L3 14a11.6 11.6 0 0 0 2.81 7.76" /><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1s1.2 1 2.5 1c2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />',
+  'shield-check': '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" />',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />',
+  truck: '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /><path d="M15 18H9" /><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /><circle cx="17" cy="18" r="2" /><circle cx="7" cy="18" r="2" />',
+  plug: '<path d="M12 22v-5" /><path d="M15 8V2" /><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" /><path d="M9 8V2" />',
+  wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" />',
+  thermometer: '<path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />',
+  package: '<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /><path d="M12 22V12" /><polyline points="3.29 7 12 12 20.71 7" /><path d="m7.5 4.27 9 5.15" />',
+  ruler: '<path d="M4 16h16M4 16v-4M8 16v-3M12 16v-4M16 16v-3M20 16v-4" />',
+  'clipboard-check': '<rect width="8" height="4" x="8" y="2" rx="1" ry="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="m9 14 2 2 4-4" />',
+  'door-open': '<path d="M11 20H2" /><path d="M11 4.562v16.157a1 1 0 0 0 1.242.97L19 20V5.562a2 2 0 0 0-1.515-1.94l-4-1A2 2 0 0 0 11 4.561z" /><path d="M11 4H8a2 2 0 0 0-2 2v14" /><path d="M14 12h.01" /><path d="M22 20h-3" />',
+};
 ---
 
 <section class="engineering section-light" id="engineering" data-section="engineering">
@@ -43,7 +135,7 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
     </aside>
 
     <div class="eng-content">
-      <!-- Конструктив -->
+      <!-- 1. Конструктив -->
       <article class="eng-block" id="eng-construction" data-eng-block="construction">
         <p class="kicker" data-reveal>{construction.kicker}</p>
         <h3 class="h3" data-reveal>{construction.title}</h3>
@@ -52,83 +144,105 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
           <div>
             {construction.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
           </div>
-          <div class="media-stack" data-reveal>
-            <Image src={weldImg} alt="Сварной шов, точечная обработка" widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
-            <Image src={badgeImg} alt="Фрезерованная эмблема Jagger Garage" widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
-          </div>
-        </div>
-      </article>
-
-      <!-- Резинокордовые гусеницы -->
-      <article class="eng-block" id="eng-tracks" data-eng-block="tracks">
-        <h3 class="h3" data-reveal>{tracks.title}</h3>
-        <p class="lead" data-reveal>{tracks.lead}</p>
-
-        <div class="segmented" role="radiogroup" aria-label="Тип гусеничного полотна" data-reveal>
-          {tracks.types.map((t, i) => (
-            <label class="segment">
-              <input type="radio" name="track-type" value={t.key} checked={i === 0} />
-              <span>{t.label}</span>
-            </label>
-          ))}
-        </div>
-
-        <div class="track-stage" data-reveal>
-          {tracks.types.map((t, i) => (
-            <Image
-              src={trackImages[t.key as keyof typeof trackImages]}
-              alt={t.label}
-              widths={[480,720,1080]}
-              sizes="(max-width: 900px) 100vw, 60vw"
-              loading="lazy"
-              class="track-img"
-              data-track={t.key}
-              style={i === 0 ? '' : 'opacity:0; visibility:hidden;'}
-            />
-          ))}
-          <div class="track-copy">
-            {tracks.types.map((t, i) => (
-              <div class="track-desc" data-track-desc={t.key} style={i === 0 ? '' : 'display:none;'}>
-                <p>{t.body}</p>
-                <p class="tag">{t.tag}</p>
-              </div>
+          <div class="photo-grid" data-reveal>
+            {constructionPhotos.map((img, i) => (
+              <Image src={img} alt={`Производство П-4, этап ${i + 1}`} width={600} widths={[300, 450, 600]} sizes="(max-width: 900px) 50vw, 20vw" loading="lazy" />
             ))}
           </div>
         </div>
-
-        <details class="mini-accordion" data-reveal>
-          <summary><span>{tracks.advantagesTitle}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
-          <div class="accordion-body-outer"><div class="accordion-body-inner">
-            <ul class="dash-list">{tracks.advantages.map((a) => <li>{a}</li>)}</ul>
-          </div></div>
-        </details>
       </article>
 
-      <!-- Ходовые качества -->
+      <!-- 2. Резинокордовые гусеницы -->
+      <article class="eng-block" id="eng-tracks" data-eng-block="tracks">
+        <h3 class="h3 underline" data-reveal>{tracks.title}</h3>
+
+        <div class="media-hero" data-reveal>
+          <Image src={tracksTexture} alt="Резинокордовая гусеничная лента, крупный план" width={1400} widths={[600,900,1400]} sizes="100vw" loading="lazy" class="media-hero-img" />
+          <div class="media-hero-overlay"></div>
+          <div class="media-hero-content">
+            <p>{tracks.lead}</p>
+          </div>
+          <img src="/images/made-in-russia.svg" alt="Сделано в России" class="made-in-russia" />
+        </div>
+
+        <div class="tread-row" data-reveal>
+          {tracks.types.map((t, i) => (
+            <div class="tread-col">
+              <div class="tread-photo">
+                <Image src={i === 0 ? treadOffroadFull : treadIndustrialFull} alt={t.label} width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 34vw" loading="lazy" />
+              </div>
+              <span class="tread-pill">{t.label}</span>
+              <p class="body-p small">{t.body}</p>
+              <p class="tag">{t.tag}</p>
+              <Image src={i === 0 ? treadOffroadDetail : treadIndustrialDetail} alt={`Текстура полотна — ${t.label}`} width={600} widths={[300,450,600]} sizes="(max-width: 900px) 100vw, 34vw" loading="lazy" class="tread-detail" />
+            </div>
+          ))}
+        </div>
+
+        <div class="advantages-row" data-reveal>
+          <div class="advantages-copy">
+            <p class="spec-label">{tracks.advantagesTitle}</p>
+            <ul class="dash-list">{tracks.advantages.map((a) => <li>{a}</li>)}</ul>
+          </div>
+          <div class="advantages-media">
+            <Image src={tensionDiagram} alt="Неравномерность натяжения — сравнение эпюры давления" width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. Ходовые качества -->
       <article class="eng-block" id="eng-handling" data-eng-block="handling">
         <h3 class="h3" data-reveal>{handling.title}</h3>
-        <div class="two-col reverse">
-          <Image src={suspensionImg} alt="Балансирная подвеска гусеничного блока" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" data-reveal />
+
+        <div class="media-hero tall" data-reveal>
+          <Image src={handlingHero} alt="П-4 на пересечённой местности" width={1400} widths={[600,900,1400]} sizes="100vw" loading="lazy" class="media-hero-img" />
+          <div class="media-hero-overlay"></div>
+          <div class="media-hero-content">
+            {handling.heroLines.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+
+        <div class="two-col reverse" data-reveal>
+          <div class="media-stack">
+            <Image src={handling2} alt="Балансирная подвеска гусеничного блока" width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+            <Image src={handling3} alt="Гидравлические ленивцы" width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+          </div>
           <div>{handling.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
         </div>
       </article>
 
-      <!-- Амфибийность -->
+      <!-- 4. Амфибийность -->
       <article class="eng-block" id="eng-amphibious" data-eng-block="amphibious">
-        <h3 class="h3" data-reveal>{amphibious.title}</h3>
-        <div class="two-col">
-          <div>
-            {amphibious.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
-            <p class="tag" data-reveal>{amphibious.tag}</p>
+        <div class="media-hero tall" data-reveal>
+          <Image src={amphibiousHero} alt="P-4 на воде" width={1400} widths={[600,900,1400]} sizes="100vw" loading="lazy" class="media-hero-img" />
+          <div class="media-hero-overlay"></div>
+          <div class="media-hero-content">
+            <h3 class="h3">{amphibious.title}</h3>
+            <p>{amphibious.heroLead}</p>
           </div>
-          <div class="water-stage" data-reveal>
-            <Image src={amphibiousImg} alt="P-4, вид спереди" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
-            <div class="waterline" id="waterline" aria-hidden="true"></div>
-          </div>
+        </div>
+
+        <div class="stat-strip" data-reveal>
+          {amphibious.stats.map((s) => (
+            <div class="stat-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.icon]} />
+              {s.value && <span class="stat-value">{s.value}</span>}
+              <span class="stat-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="icon-bullets" data-reveal>
+          {amphibious.detailRows.map((row) => (
+            <div class="icon-bullet">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[row.icon]} />
+              <p>{row.text}</p>
+            </div>
+          ))}
         </div>
       </article>
 
-      <!-- Трансмиссия -->
+      <!-- 5. Трансмиссия -->
       <article class="eng-block" id="eng-transmission" data-eng-block="transmission">
         <h3 class="h3" data-reveal>{transmission.title}</h3>
         <p class="lead" data-reveal>{transmission.lead}</p>
@@ -142,108 +256,141 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
             ))}
           </div>
           <div data-reveal>
-            <Image src={engineImg} alt="Силовой агрегат Cummins в подкапотном пространстве" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
+            <div class="media-stack">
+              <Image src={engineImg} alt="Силовой агрегат Cummins в подкапотном пространстве" width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+              <Image src={engineRender} alt="Мотор и силовая установка, рендер" width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+            </div>
             {transmission.body.map((p) => <p class="body-p small" data-reveal>{p}</p>)}
           </div>
         </div>
       </article>
 
-      <!-- Перевозка грузов -->
+      <!-- 6. Перевозка грузов -->
       <article class="eng-block" id="eng-cargo" data-eng-block="cargo">
+        <p class="kicker" data-reveal>{cargo.kicker}</p>
         <h3 class="h3" data-reveal>{cargo.title}</h3>
-        <div class="two-col">
-          <div>{cargo.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
-          <div class="capacity-card" data-reveal>
-            <p class="spec-label">{cargo.capacityTitle}</p>
-            <ul class="dash-list">{cargo.capacity.map((c) => <li>{c}</li>)}</ul>
-            <p class="tag">{cargo.tag}</p>
+        <div class="two-col" data-reveal>
+          <div>
+            <p class="lead">{cargo.lead}</p>
+            <div class="icon-bullets">
+              {cargo.features.map((f) => (
+                <div class="icon-bullet">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[f.icon]} />
+                  <p>{f.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
+          <Image src={cargoHero} alt="Кузов вездехода П-4" width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
+        </div>
+
+        <div class="caption-grid" data-reveal>
+          <figure>
+            <Image src={cargo2} alt={cargo.gallery[0].caption} width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
+            <figcaption><strong>{cargo.gallery[0].caption}</strong><span>{cargo.gallery[0].text}</span></figcaption>
+          </figure>
+          <figure>
+            <Image src={cargoHero} alt={cargo.gallery[1].caption} width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" class="crop-tight" />
+            <figcaption><strong>{cargo.gallery[1].caption}</strong><span>{cargo.gallery[1].text}</span></figcaption>
+          </figure>
+        </div>
+
+        <div class="stat-strip" data-reveal>
+          {cargo.stats.map((s) => (
+            <div class="stat-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.icon]} />
+              <span class="stat-value">{s.value}</span>
+              <span class="stat-label">{s.label}</span>
+            </div>
+          ))}
         </div>
       </article>
 
-      <!-- Транспортировка -->
+      <!-- 7. Транспортировка -->
       <article class="eng-block" id="eng-transport" data-eng-block="transport">
         <h3 class="h3" data-reveal>{transport.title}</h3>
-        <div class="two-col reverse">
-          <Image src={transportImg} alt="Транспортировка вездехода" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" data-reveal />
+        <div class="two-col reverse" data-reveal>
+          <div class="photo-grid two-up">
+            {transportPhotos.map((img, i) => (
+              <Image src={img} alt={`Транспортировка вездехода П-4, фото ${i + 1}`} width={900} widths={[400,600,900]} sizes="(max-width: 900px) 50vw, 22vw" loading="lazy" />
+            ))}
+          </div>
           <div>{transport.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
         </div>
       </article>
 
-      <!-- Эргономика -->
+      <!-- 8. Эргономика -->
       <article class="eng-block" id="eng-ergonomics" data-eng-block="ergonomics">
         <h3 class="h3" data-reveal>{ergonomics.title}</h3>
-        <div class="media-stack two-photo" data-reveal>
-          <Image src={cabinSeatImg} alt="Кресло водителя и рулевая колонка" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 50vw" loading="lazy" />
-          <Image src={cabinDetailImg} alt="Подножка и элементы посадки в кабину" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 50vw" loading="lazy" />
+        <div class="tight-gallery" data-reveal>
+          {galleryPhotos.map((img, i) => (
+            <div class="tight-gallery-item">
+              <Image src={img} alt={`Эргономика кабины П-4, фото ${i + 1}`} width={600} widths={[300,450,600]} sizes="(max-width: 900px) 33vw, 18vw" loading="lazy" />
+            </div>
+          ))}
         </div>
         <ul class="dash-list two-cols" data-reveal>
           {ergonomics.body.map((p) => <li>{p}</li>)}
         </ul>
       </article>
 
-      <!-- Дополнительное оборудование -->
+      <!-- 9. Дополнительное оборудование -->
       <article class="eng-block" id="eng-equipment" data-eng-block="equipment">
         <h3 class="h3" data-reveal>{equipment.title}</h3>
-        <p class="lead" data-reveal>{equipment.lead}</p>
-
-        <div class="attach-cards" data-reveal>
-          <figure class="attach-card">
-            <Image src={hydroImg} alt="Консоль «ГИДРО AUX» в кабине" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
-            <figcaption>{equipment.hydro.title}</figcaption>
-          </figure>
-          <figure class="attach-card">
-            <Image src={drillingImg} alt="P-4 с буровой установкой" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
-            <figcaption>Буровая установка лёгкого класса</figcaption>
-          </figure>
-          <figure class="attach-card">
-            <Image src={tentImg} alt="P-4 с тентовым укрытием кузова" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
-            <figcaption>Кузов с тентовым укрытием</figcaption>
-          </figure>
+        <div class="two-col" data-reveal>
+          <div>
+            <p class="lead">{equipment.lead}</p>
+            <div class="icon-bullets">
+              {equipmentSummary.map((s) => (
+                <div class="icon-bullet">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.icon]} />
+                  <p>{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Image src={hydroImg} alt="Консоль «ГИДРО AUX» в кабине" width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
         </div>
 
-        <div class="mini-accordions" data-reveal>
-          <details class="mini-accordion">
-            <summary><span>Штатная гидросистема</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
-            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.hydro.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
-          </details>
-          <details class="mini-accordion">
-            <summary><span>{equipment.frame.lead}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
-            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.frame.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
-          </details>
-          <details class="mini-accordion">
-            <summary><span>{equipment.mounts.title}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
-            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.mounts.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
-          </details>
-          <details class="mini-accordion">
-            <summary><span>{equipment.outriggers.title}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
-            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.outriggers.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
-          </details>
+        <div class="attach-cards" data-reveal>
+          {equipmentPhotos.slice(1).map((p) => (
+            <figure class="attach-card">
+              <Image src={p.img} alt={p.caption} width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+              <figcaption>{p.caption}</figcaption>
+            </figure>
+          ))}
         </div>
       </article>
 
-      <!-- Обслуживание -->
+      <!-- 10. Обслуживание -->
       <article class="eng-block" id="eng-maintenance" data-eng-block="maintenance">
         <h3 class="h3" data-reveal>{maintenance.title}</h3>
-        <p class="lead" data-reveal>{maintenance.lead}</p>
-        <div class="two-col">
-          <div>{maintenance.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
-          <div class="redundancy" data-reveal>
-            <p class="spec-label">{maintenance.redundancy.title}</p>
-            <ul class="redundancy-list">
-              {maintenance.redundancy.items.map((it) => (
-                <li><strong>{it.label}:</strong> {it.value}</li>
-              ))}
-            </ul>
+        <div class="two-col" data-reveal>
+          <div>
+            <p class="lead">{maintenance.lead}</p>
+            {maintenance.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
           </div>
+          <Image src={maintenance2} alt="Обслуживание П-4 в поле" width={1080} widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
         </div>
+
+        <p class="spec-label section-spacer" data-reveal>{maintenance.redundancy.title}</p>
+        <div class="icon-bullets" data-reveal>
+          {maintenance.redundancy.items.map((it) => (
+            <div class="icon-bullet">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[redundancyIcons[it.label] ?? 'wrench']} />
+              <p><strong>{it.label}:</strong> {it.value}</p>
+            </div>
+          ))}
+        </div>
+
         <div class="two-col" data-reveal>
           <div class="mini-card">
             <p class="spec-label">{maintenance.coldStart.title}</p>
             <ul class="dash-list">{maintenance.coldStart.items.map((it) => <li>{it}</li>)}</ul>
           </div>
           <div class="mini-card">
-            <p class="spec-label">{maintenance.unification.title}</p>
+            <Image src={maintenance3} alt="Унификация узлов и скорость ремонта" width={900} widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+            <p class="spec-label" style="margin-top: 0.8em;">{maintenance.unification.title}</p>
             <p class="body-p small">{maintenance.unification.body}</p>
           </div>
         </div>
@@ -297,6 +444,7 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
     color: var(--c-light);
     margin-bottom: 0.5em;
   }
+  .h3.underline { padding-bottom: 0.6em; border-bottom: 1px solid var(--c-line); margin-bottom: var(--space-md); }
   .lead { color: var(--c-text-dim); max-width: 62ch; margin-bottom: var(--space-md); }
   .body-p { color: var(--c-text-dim); margin-bottom: 1em; max-width: 58ch; }
   .body-p.small { font-size: var(--fs-small); }
@@ -308,20 +456,25 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
 
   .media-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .media-stack img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--c-line); }
-  .media-stack.two-photo { margin-bottom: var(--space-md); }
+
+  .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+  .photo-grid img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--c-line); }
+  .photo-grid.two-up { grid-template-columns: repeat(2, 1fr); }
 
   .spec-groups { display: flex; flex-direction: column; gap: 1.2em; }
   .spec-group ul { display: flex; flex-direction: column; gap: 0.3em; margin-top: 0.4em; }
   .spec-label { font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-faint); }
   .spec-group li, .capacity-card li { color: var(--c-text); font-size: 0.95rem; }
+  .section-spacer { margin-top: -0.4em; }
 
   .capacity-card, .mini-card {
     border: 1px solid var(--c-line);
     padding: var(--space-md);
     background: var(--c-bg-panel);
   }
+  .mini-card img { width: 100%; height: auto; border: 1px solid var(--c-line-dark); }
   .redundancy { border: 1px solid var(--c-line); padding: var(--space-md); background: var(--c-bg-panel); }
-  .capacity-card, .mini-card, .redundancy, .attach-card {
+  .capacity-card, .mini-card, .redundancy, .attach-card, .stat-strip {
     --c-light: var(--c-light-dark);
     --c-text: var(--c-text-dark);
     --c-text-dim: var(--c-text-dim-dark);
@@ -337,47 +490,100 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
   .dash-list li::before { content: '—'; position: absolute; left: 0; color: var(--c-text-faint); }
   .dash-list.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em 2rem; }
 
-  .segmented { display: inline-flex; border: 1px solid var(--c-line); margin-bottom: var(--space-md); }
-  .segment { position: relative; padding: 0.6em 1.2em; font-family: var(--font-label); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-dim); cursor: pointer; border-right: 1px solid var(--c-line); }
-  .segment:last-child { border-right: none; }
-  .segment input { position: absolute; opacity: 0; pointer-events: none; }
-  .segment:has(input:checked) { color: var(--c-bg); background: var(--c-accent); }
-
-  .track-stage { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-md); align-items: center; margin-bottom: var(--space-md); }
-  .track-stage { position: relative; }
-  .track-img { position: relative; width: 100%; border: 1px solid var(--c-line); transition: opacity 0.5s var(--ease-out); }
-  .track-copy p { color: var(--c-text-dim); margin-bottom: 0.8em; }
-
-  .water-stage { position: relative; overflow: hidden; border: 1px solid var(--c-line); }
-  .water-stage img { width: 100%; display: block; }
-  .waterline {
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    height: 0%;
-    background: linear-gradient(to top, rgba(79,182,255,0.55), rgba(79,182,255,0.15));
-    border-top: 2px solid rgba(79,182,255,0.8);
+  /* Shared: full-bleed photo with gradient-legible text panel (Advantage.astro concept) */
+  .media-hero {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--c-line);
+    min-height: 320px;
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: flex-end;
   }
+  .media-hero.tall { min-height: 420px; }
+  .media-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: none; }
+  .media-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,11,13,0.92) 0%, rgba(10,11,13,0.55) 45%, rgba(10,11,13,0.05) 100%);
+  }
+  .media-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: var(--space-md) var(--space-lg) var(--space-lg);
+    max-width: 62ch;
+  }
+  .media-hero-content .h3 { color: var(--c-light-dark); margin-bottom: 0.3em; }
+  .media-hero-content p { color: var(--c-text-dim-dark); margin-bottom: 0.6em; }
+  .media-hero-content p:last-child { margin-bottom: 0; }
+  .made-in-russia { position: absolute; left: var(--space-md); bottom: var(--space-md); z-index: 1; width: 64px; height: auto; }
 
-  .attach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
+  /* Tread comparison row (block 2) */
+  .tread-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg); }
+  .tread-photo { border: 1px solid var(--c-line); overflow: hidden; margin-bottom: 0.8em; }
+  .tread-photo img { width: 100%; height: auto; border: none; display: block; }
+  .tread-pill {
+    display: inline-block;
+    padding: 0.4em 1em;
+    border: 1px solid var(--c-line);
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text);
+    margin-bottom: 0.8em;
+  }
+  .tread-detail { width: 100%; height: 120px; object-fit: cover; border: 1px solid var(--c-line); margin-top: 0.6em; }
+
+  .advantages-row { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-lg); align-items: start; }
+  .advantages-media img { width: 100%; height: auto; border: 1px solid var(--c-line); }
+
+  /* Icon strip / icon bullet list — shared across amphibious, cargo, equipment, maintenance */
+  .icon { width: 22px; height: 22px; flex: none; color: var(--c-accent-ink); }
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-panel);
+    margin-bottom: var(--space-lg);
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5em;
+    padding: var(--space-md);
+    border-right: 1px solid var(--c-line);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-value { font-family: var(--font-heading); font-weight: 900; font-size: 1.2rem; color: var(--c-light); }
+  .stat-label { font-size: 0.8rem; color: var(--c-text-dim); }
+
+  .icon-bullets { display: flex; flex-direction: column; gap: 1em; margin-top: 1em; }
+  .icon-bullet { display: flex; gap: 0.9em; align-items: flex-start; padding-bottom: 1em; border-bottom: 1px solid var(--c-line); }
+  .icon-bullet:last-child { border-bottom: none; padding-bottom: 0; }
+  .icon-bullet p { color: var(--c-text-dim); font-size: 0.92rem; margin: 0; }
+  .icon-bullet strong { color: var(--c-text); }
+
+  .caption-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg); }
+  .caption-grid img { width: 100%; height: 220px; object-fit: cover; border: 1px solid var(--c-line); }
+  .caption-grid img.crop-tight { object-position: 70% 30%; }
+  .caption-grid figcaption { display: flex; flex-direction: column; gap: 0.3em; margin-top: 0.6em; }
+  .caption-grid figcaption strong { color: var(--c-text); font-family: var(--font-heading); }
+  .caption-grid figcaption span { color: var(--c-text-dim); font-size: 0.88rem; }
+
+  .attach-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
   .attach-card { border: 1px solid var(--c-line); overflow: hidden; background: var(--c-bg-panel); }
-  .attach-card img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: var(--c-surface); transition: transform var(--dur-med) var(--ease-out); }
+  .attach-card img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: var(--c-surface); transition: transform var(--dur-med) var(--ease-out); border: none; }
   .attach-card:hover img { transform: scale(1.06); }
   .attach-card figcaption { padding: 0.8em 1em; font-size: var(--fs-small); color: var(--c-text-dim); border-top: 1px solid var(--c-line); }
 
-  .mini-accordions { display: flex; flex-direction: column; }
-  .mini-accordion { border-top: 1px solid var(--c-line); }
-  .mini-accordion:last-child { border-bottom: 1px solid var(--c-line); }
-  .mini-accordion summary {
-    list-style: none; cursor: pointer; padding: 1em 0;
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: var(--font-heading); font-weight: 700; color: var(--c-light);
-  }
-  .mini-accordion summary::-webkit-details-marker { display: none; }
-  .mini-accordion .chevron { width: 18px; height: 18px; transition: transform var(--dur-med) var(--ease-out); }
-  .mini-accordion[open] .chevron { transform: rotate(180deg); }
-  .mini-accordion .accordion-body-outer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-med) var(--ease-in-out); }
-  .mini-accordion[open] .accordion-body-outer { grid-template-rows: 1fr; }
-  .mini-accordion .accordion-body-inner { overflow: hidden; padding-bottom: 1em; }
+  /* Tight hover-zoom gallery (block 8) */
+  .tight-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-bottom: var(--space-lg); }
+  .tight-gallery-item { position: relative; aspect-ratio: 1; overflow: hidden; }
+  .tight-gallery-item img { width: 100%; height: 100%; object-fit: cover; border: none; transition: transform var(--dur-med) var(--ease-out); }
+  .tight-gallery-item:hover img { transform: scale(1.18); }
 
   @media (max-width: 980px) {
     .eng-grid { grid-template-columns: 1fr; }
@@ -385,11 +591,14 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
     .eng-nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.8rem 1.4rem; }
     .two-col, .two-col.reverse { grid-template-columns: 1fr; }
     .attach-cards { grid-template-columns: 1fr 1fr; }
-    .track-stage { grid-template-columns: 1fr; }
+    .tread-row, .advantages-row, .caption-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .tight-gallery { grid-template-columns: repeat(4, 1fr); }
   }
   @media (max-width: 560px) {
     .attach-cards { grid-template-columns: 1fr; }
     .dash-list.two-cols { grid-template-columns: 1fr; }
+    .tight-gallery { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 
@@ -399,21 +608,6 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
   function initEngineering() {
     const section = document.querySelector('[data-section="engineering"]');
     if (!section) return;
-
-    // Track type switcher
-    const trackInputs = section.querySelectorAll<HTMLInputElement>('input[name="track-type"]');
-    trackInputs.forEach((input) => {
-      input.addEventListener('change', () => {
-        section.querySelectorAll<HTMLElement>('.track-img').forEach((img) => {
-          const match = img.dataset.track === input.value;
-          img.style.opacity = match ? '1' : '0';
-          img.style.visibility = match ? 'visible' : 'hidden';
-        });
-        section.querySelectorAll<HTMLElement>('[data-track-desc]').forEach((el) => {
-          el.style.display = el.dataset.trackDesc === input.value ? '' : 'none';
-        });
-      });
-    });
 
     // Scroll-spy sidebar
     const links = section.querySelectorAll<HTMLAnchorElement>('[data-eng-link]');
@@ -430,27 +624,6 @@ const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as co
         { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
       );
       blocks.forEach((b) => observer.observe(b));
-    }
-
-    // Amphibious waterline reveal, scrubbed with scroll
-    const waterline = document.getElementById('waterline');
-    if (waterline && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      withGsapContext(section, () => {
-        gsap.fromTo(
-          waterline,
-          { height: '0%' },
-          {
-            height: '62%',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: waterline.closest('.water-stage'),
-              start: 'top 75%',
-              end: 'bottom 40%',
-              scrub: true,
-            },
-          }
-        );
-      });
     }
   }
 
