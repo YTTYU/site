@@ -1,0 +1,91 @@
+---
+import { contacts } from '../../content/data/contacts';
+---
+
+<section class="contacts section-alt" id="contacts" data-section="contacts">
+  <div class="container grid">
+    <div>
+      <p class="kicker" data-reveal>Контакты</p>
+      <h2 class="h2" data-reveal>Готовы обсудить вашу задачу</h2>
+      <p class="lead" data-reveal>
+        Оставьте заявку — подберём модификацию П-4 под ваши условия эксплуатации и ответим с расчётом сроков поставки.
+      </p>
+
+      <ul class="contact-list" data-reveal>
+        <li><span>Телефон</span><a href={contacts.phoneHref}>{contacts.phone}</a></li>
+        <li><span>Email</span><a href={`mailto:${contacts.email}`}>{contacts.email}</a></li>
+        <li><span>Производство</span><span>{contacts.city}</span></li>
+      </ul>
+      {contacts.isPlaceholder && (
+        <p class="placeholder-note" data-reveal>* контактные данные временные — будут обновлены</p>
+      )}
+    </div>
+
+    <form class="contact-form" data-reveal aria-label="Форма заявки">
+      <label>
+        <span>Имя</span>
+        <input type="text" name="name" autocomplete="name" required />
+      </label>
+      <label>
+        <span>Телефон или email</span>
+        <input type="text" name="contact" autocomplete="tel" required />
+      </label>
+      <label>
+        <span>Задача</span>
+        <textarea name="message" rows="4" placeholder="Кратко опишите условия эксплуатации и задачи"></textarea>
+      </label>
+      <button type="submit">Отправить заявку</button>
+      <p class="form-note">Форма пока не подключена к почтовому провайдеру — интегрируем на следующем этапе.</p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .h2 { font-family: var(--font-heading); font-weight: 900; font-size: var(--fs-h2); color: var(--c-light); margin-block: 0.4em 0.5em; }
+  .lead { color: var(--c-text-dim); max-width: 48ch; margin-bottom: var(--space-lg); }
+
+  .contact-list { display: flex; flex-direction: column; gap: 1em; }
+  .contact-list li { display: flex; justify-content: space-between; gap: 1em; border-bottom: 1px solid var(--c-line); padding-bottom: 0.8em; }
+  .contact-list span:first-child { color: var(--c-text-faint); font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .contact-list a { color: var(--c-text); }
+  .contact-list a:hover { color: var(--c-accent); }
+  .placeholder-note { margin-top: 1em; font-size: 0.8rem; color: var(--c-text-faint); font-style: italic; }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+    border: 1px solid var(--c-line);
+    padding: var(--space-lg);
+    background: var(--c-bg-panel);
+  }
+  .contact-form label { display: flex; flex-direction: column; gap: 0.4em; font-size: var(--fs-small); color: var(--c-text-dim); }
+  .contact-form input, .contact-form textarea {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    color: var(--c-text);
+    padding: 0.7em 0.9em;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    resize: vertical;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { outline: 1px solid var(--c-accent); border-color: var(--c-accent); }
+  .contact-form button {
+    margin-top: 0.4em;
+    padding: 0.9em 1.4em;
+    background: var(--c-accent);
+    color: var(--c-bg);
+    font-family: var(--font-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: filter var(--dur-fast) var(--ease-out);
+  }
+  .contact-form button:hover { filter: brightness(1.1); }
+  .form-note { font-size: 0.7rem; color: var(--c-text-faint); font-style: italic; }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,186 @@
+---
+import { positioning, stats } from '../../content/data/copy';
+---
+
+<section class="positioning section-alt" data-section="positioning">
+  <div class="container">
+    <p class="kicker" data-reveal>{positioning.kicker}</p>
+    <h2 class="h2" data-reveal>{positioning.title}</h2>
+    <p class="lead" data-reveal>{positioning.intro}</p>
+
+    <div class="cards">
+      {positioning.categories.map((cat) => (
+        <details class="card" data-reveal>
+          <summary>
+            <span>{cat.title}</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg>
+          </summary>
+          <div class="accordion-body-outer">
+            <div class="accordion-body-inner">
+              <ul>
+                {cat.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            </div>
+          </div>
+        </details>
+      ))}
+
+      <div class="card card-jagger" data-reveal>
+        <p class="jagger-callout">{positioning.callout}</p>
+        <h3>{positioning.jagger.title}</h3>
+        <p class="jagger-sub">{positioning.jagger.subtitle}</p>
+        <ul>
+          {positioning.jagger.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="stat-band" id="stat-band">
+      {stats.map((s) => (
+        <div class="stat" data-reveal>
+          <span class="stat-value"><span class="counter" data-target={s.value}>{s.value}</span><span class="stat-unit">{s.unit}</span></span>
+          <span class="stat-label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .h2 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: var(--fs-h2);
+    color: var(--c-light);
+    margin-block: 0.5em 0.3em;
+    max-width: 24ch;
+  }
+  .lead { color: var(--c-text-dim); max-width: 65ch; margin-bottom: var(--space-lg); }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--c-line);
+    border: 1px solid var(--c-line);
+  }
+  .card { background: var(--c-bg-alt); padding: var(--space-md); }
+  .card summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--c-light);
+  }
+  .card summary::-webkit-details-marker { display: none; }
+  .card .chevron { width: 18px; height: 18px; flex: none; transition: transform var(--dur-med) var(--ease-out); }
+  .card[open] .chevron { transform: rotate(180deg); }
+  .card .accordion-body-outer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-med) var(--ease-in-out);
+  }
+  .card[open] .accordion-body-outer { grid-template-rows: 1fr; }
+  .card .accordion-body-inner { overflow: hidden; }
+  .card ul { padding-top: 1em; display: flex; flex-direction: column; gap: 0.7em; }
+  .card li { font-size: var(--fs-small); color: var(--c-text-dim); padding-left: 1em; position: relative; }
+  .card li::before { content: '—'; position: absolute; left: 0; color: var(--c-text-faint); }
+
+  .card-jagger {
+    background: linear-gradient(160deg, var(--c-accent-dim), var(--c-bg-alt) 70%);
+    border-left: 2px solid var(--c-accent);
+  }
+  .jagger-callout {
+    font-family: var(--font-label);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 0.6em;
+  }
+  .card-jagger h3 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--c-light);
+  }
+  .jagger-sub { font-size: var(--fs-small); color: var(--c-text-dim); margin-block: 0.4em 1em; }
+  .card-jagger ul { display: flex; flex-direction: column; gap: 0.6em; }
+  .card-jagger li { font-size: var(--fs-small); color: var(--c-text); padding-left: 1.1em; position: relative; }
+  .card-jagger li::before { content: '✓'; position: absolute; left: 0; color: var(--c-accent); }
+
+  .stat-band {
+    margin-top: var(--space-lg);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    border-top: 1px solid var(--c-line);
+    padding-top: var(--space-lg);
+  }
+  .stat { text-align: left; }
+  .stat-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--c-light);
+    line-height: 1;
+  }
+  .stat-unit { font-size: 0.4em; margin-left: 0.3em; color: var(--c-accent); }
+  .stat-label { display: block; margin-top: 0.5em; color: var(--c-text-dim); font-size: var(--fs-small); max-width: 24ch; }
+
+  @media (max-width: 1100px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .stat-band { grid-template-columns: 1fr; gap: var(--space-md); }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, withGsapContext } from '../../scripts/gsap/core';
+
+  function initStatCounters() {
+    const band = document.getElementById('stat-band');
+    if (!band) return;
+
+    // Fraction values like "3 / 2" aren't meaningfully "countable" — leave the
+    // server-rendered text alone and only animate genuine single numbers.
+    // Counting starts only once the trigger actually fires, so the real SSR
+    // value stays on screen (no flash-of-zero) until the reveal begins.
+    withGsapContext(band, () => {
+      band.querySelectorAll<HTMLElement>('.counter').forEach((el) => {
+        const target = el.dataset.target ?? '';
+        if (target.includes('/')) return;
+
+        const numeric = parseFloat(target.replace(/[^0-9.]/g, ''));
+        if (Number.isNaN(numeric)) return;
+        const decimals = target.includes('.') ? 1 : 0;
+
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            const proxy = { val: 0 };
+            gsap.to(proxy, {
+              val: numeric,
+              duration: 1.6,
+              ease: 'power2.out',
+              onUpdate: () => {
+                el.textContent = proxy.val.toFixed(decimals);
+              },
+            });
+          },
+        });
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initStatCounters);
+</script>

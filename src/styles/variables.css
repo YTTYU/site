@@ -1,0 +1,59 @@
+:root {
+  /* Palette — dark industrial, cool steel + amber accent (headlight glow) */
+  --c-bg: #0a0b0d;
+  --c-bg-alt: #131519;
+  --c-bg-panel: #1a1d22;
+  --c-surface: #202329;
+  --c-line: #2c3038;
+  --c-text: #eef0f2;
+  --c-text-dim: #9aa1ab;
+  --c-text-faint: #656c76;
+  --c-accent: #4fb6ff;
+  --c-accent-dim: #1f4a66;
+  --c-warn: #ff7a1a;
+  --c-light: #f4f5f6;
+  --c-light-alt: #e7e9ec;
+
+  /* Typography roles (see fonts.css for delivered weights) */
+  --font-display: 'Eurostile Extended', 'Arial Narrow', sans-serif; /* TODO: swap for Conthrax Heavy */
+  --font-slab: Georgia, 'Times New Roman', serif; /* TODO: swap for Arturito Slab Bold */
+  --font-heading: 'PF DinDisplay Pro', 'Arial Narrow', sans-serif;
+  --font-body: 'Core Sans D', Arial, sans-serif;
+  --font-label: 'Core Sans D Condensed', 'Core Sans D', Arial, sans-serif;
+  --font-emphasis: 'PF DinDisplay Pro', Arial, sans-serif; /* TODO: swap for Core Sans A 75 ExtraBold */
+
+  /* Type scale (fluid) */
+  --fs-display: clamp(3.5rem, 9vw, 9rem);
+  --fs-h1: clamp(2.25rem, 5vw, 4rem);
+  --fs-h2: clamp(1.75rem, 3.2vw, 2.75rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-body: clamp(0.95rem, 1.1vw, 1.05rem);
+  --fs-small: 0.8125rem;
+  --fs-label: 0.75rem;
+
+  /* Spacing */
+  --space-section: clamp(4rem, 10vw, 9rem);
+  --space-lg: clamp(2rem, 5vw, 4rem);
+  --space-md: 1.5rem;
+  --space-sm: 0.75rem;
+  --content-max: 1440px;
+  --content-pad: clamp(1.25rem, 4vw, 4rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.25s;
+  --dur-med: 0.5s;
+  --dur-slow: 0.9s;
+
+  --radius: 2px;
+  --nav-h: 76px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01s;
+    --dur-med: 0.01s;
+    --dur-slow: 0.01s;
+  }
+}

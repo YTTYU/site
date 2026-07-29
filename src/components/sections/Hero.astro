@@ -1,0 +1,242 @@
+---
+import { Image } from 'astro:assets';
+import heroImg from '../../assets/images/hero/front-dark.png';
+import { hero } from '../../content/data/copy';
+---
+
+<section class="hero" id="top" data-section="hero">
+  <div class="hero-media">
+    <Image
+      src={heroImg}
+      alt="P-4 — гусеничный вездеход-амфибия Jagger Garage, вид спереди"
+      widths={[640, 960, 1440, 1920, 2400]}
+      sizes="100vw"
+      quality={85}
+      loading="eager"
+      fetchpriority="high"
+      class="hero-poster"
+      id="hero-poster"
+    />
+    <video
+      class="hero-video"
+      id="hero-video"
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={heroImg.src}
+      aria-hidden="true"
+    >
+      <source data-src="/video/hero-source.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-vignette"></div>
+  </div>
+
+  <div class="container hero-content">
+    <p class="kicker" data-reveal>{hero.kicker}</p>
+    <h1 class="hero-model" id="hero-model" aria-label={hero.model}>
+      {hero.model.split('').map((ch) => <span class="ch">{ch}</span>)}
+    </h1>
+    <div class="hero-tagline" data-reveal data-reveal-delay="0.3">
+      <span class="hero-tagline-main">{hero.title}</span>
+      <span class="hero-tagline-sub">{hero.titleSub}</span>
+    </div>
+  </div>
+
+  <a href="#advantage" class="scroll-cue" aria-label="Прокрутить к следующему разделу">
+    <span class="scroll-cue-line"></span>
+    <span class="scroll-cue-label">Скролл</span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 560px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: #000;
+    padding-block: 0 var(--space-lg);
+  }
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-poster, .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .hero-video {
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+  .hero-video.is-playing { opacity: 1; }
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(10,11,13,0.95) 0%, rgba(10,11,13,0.35) 38%, rgba(10,11,13,0.15) 60%, rgba(10,11,13,0.55) 100%),
+      radial-gradient(ellipse at center 60%, transparent 35%, rgba(0,0,0,0.55) 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .hero-model {
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 22vw, 14rem);
+    line-height: 0.85;
+    color: var(--c-light);
+    text-shadow: 0 0 60px rgba(79, 182, 255, 0.25);
+    margin-block: 0.2em 0.1em;
+  }
+  .hero-model .ch { display: inline-block; }
+
+  .hero-tagline {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15em;
+    background: rgba(20, 22, 26, 0.55);
+    border: 1px solid var(--c-line);
+    padding: 0.9em 1.3em;
+    backdrop-filter: blur(4px);
+  }
+  .hero-tagline-main {
+    font-family: var(--font-slab);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    color: var(--c-light);
+  }
+  .hero-tagline-sub {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--c-text-dim);
+  }
+
+  .scroll-cue {
+    position: absolute;
+    right: var(--content-pad);
+    bottom: var(--space-md);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--c-text-dim);
+  }
+  .scroll-cue-label {
+    font-family: var(--font-label);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+  .scroll-cue-line {
+    width: 1px;
+    height: 48px;
+    background: var(--c-text-faint);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-cue-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--c-accent);
+    transform: translateY(-100%);
+    animation: cue-drop 1.8s ease-in-out infinite;
+  }
+  @keyframes cue-drop {
+    0% { transform: translateY(-100%); }
+    60%, 100% { transform: translateY(100%); }
+  }
+
+  @media (max-width: 640px) {
+    .scroll-cue { display: none; }
+    .hero { align-items: flex-end; padding-bottom: var(--space-md); }
+  }
+</style>
+
+<script>
+  import { gsap, SplitText, withGsapContext } from '../../scripts/gsap/core';
+
+  function initHero() {
+    const section = document.querySelector('[data-section="hero"]');
+    if (!section) return;
+
+    withGsapContext(section, () => {
+      const chars = section.querySelectorAll('.hero-model .ch');
+      gsap.set(chars, { yPercent: 120, opacity: 0 });
+      gsap.to(chars, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power4.out',
+        stagger: 0.06,
+        delay: 0.2,
+      });
+
+      // Tagline splits into words at runtime via SplitText and staggers in
+      // just after the model number, rather than a plain fade.
+      const taglineEl = section.querySelector<HTMLElement>('.hero-tagline-main');
+      if (taglineEl) {
+        const split = new SplitText(taglineEl, { type: 'words' });
+        gsap.set(split.words, { yPercent: 100, opacity: 0 });
+        gsap.to(split.words, {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.05,
+          delay: 0.6,
+        });
+      }
+
+      // Subtle scroll parallax on the media layer — GPU-friendly transform only.
+      const media = section.querySelector('.hero-media');
+      if (media && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.to(media, {
+          yPercent: 18,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+    });
+
+    // Defer the real video to larger / non-constrained connections only.
+    const video = document.getElementById('hero-video') as HTMLVideoElement | null;
+    const source = video?.querySelector('source');
+    const conn = (navigator as any).connection;
+    const saveData = conn?.saveData;
+    const slow = conn && /2g/.test(conn.effectiveType ?? '');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (video && source && window.innerWidth >= 720 && !saveData && !slow && !reduced) {
+      const dataSrc = source.getAttribute('data-src');
+      if (dataSrc) {
+        source.setAttribute('src', dataSrc);
+        video.load();
+        video.addEventListener('canplay', () => {
+          video.play().catch(() => {});
+          video.classList.add('is-playing');
+        }, { once: true });
+      }
+    }
+  }
+
+  document.addEventListener('astro:page-load', initHero);
+</script>

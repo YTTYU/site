@@ -1,0 +1,134 @@
+/*
+  Font roles used across the site:
+  --font-display : big numeric/wordmark type ("P-4", section numerals)
+                   Target: Conthrax Heavy (not yet delivered) -> temp fallback Eurostile Extended Black
+  --font-slab    : accent/tagline lines, quote-like statements
+                   Target: Arturito Slab Bold (not yet delivered) -> temp fallback system slab serif
+  --font-heading : section titles, sidebar nav
+                   PF DinDisplay Pro Black / Bold
+  --font-body    : paragraph copy
+                   Core Sans D 25 Light / 45 Medium
+  --font-label   : condensed labels, stat captions, table headers
+                   Core Sans D 27 Cn Light / 47 Cn Medium
+  --font-emphasis: Target: Core Sans A 75 ExtraBold (not yet delivered) -> temp fallback PF DinDisplay Pro Black
+
+  TODO: once Arturito Slab Bold / Conthrax Heavy / Core Sans A 75 ExtraBold arrive,
+  drop the files in this folder, add @font-face blocks below, and repoint the
+  three fallback var() assignments in variables.css.
+*/
+
+@font-face {
+  font-family: 'Core Sans D';
+  src: url('/fonts/CoreSansD-15Thin.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Core Sans D';
+  src: url('/fonts/CoreSansD-25Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Core Sans D';
+  src: url('/fonts/CoreSansD-45Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Core Sans D';
+  src: url('/fonts/CoreSansD-65Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Core Sans D Condensed';
+  src: url('/fonts/CoreSansD-27CnLight.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Core Sans D Condensed';
+  src: url('/fonts/CoreSansD-47CnMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PF DinDisplay Pro';
+  src: url('/fonts/PFDinDisplayPro-BlackItalic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Temp stand-in for Conthrax Heavy until delivered */
+@font-face {
+  font-family: 'Eurostile Extended';
+  src: url('/fonts/EurostileExtended-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

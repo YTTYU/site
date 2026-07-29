@@ -1,0 +1,111 @@
+---
+import LogoMark from './LogoMark.astro';
+import { contacts } from '../../content/data/contacts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div class="col-brand">
+      <a href="#top" class="brand" aria-label="Jagger Garage">
+        <LogoMark class="brand-mark" />
+      </a>
+      <p class="tag">Новый класс транспортных средств высокой проходимости.</p>
+    </div>
+
+    <nav class="col" aria-label="Навигация по сайту">
+      <p class="col-title">Разделы</p>
+      <ul>
+        <li><a href="#advantage">Гусеничное превосходство</a></li>
+        <li><a href="#platform">Варианты исполнения</a></li>
+        <li><a href="#engineering">Конструктивные и эксплуатационные свойства</a></li>
+        <li><a href="#equipment">Дополнительное оборудование</a></li>
+        <li><a href="#gallery">Галерея</a></li>
+      </ul>
+    </nav>
+
+    <div class="col">
+      <p class="col-title">Контакты</p>
+      <ul>
+        <li><a href={contacts.phoneHref}>{contacts.phone}</a></li>
+        <li><a href={`mailto:${contacts.email}`}>{contacts.email}</a></li>
+        <li>{contacts.city}</li>
+      </ul>
+      {contacts.isPlaceholder && (
+        <p class="placeholder-note">* контакты будут обновлены</p>
+      )}
+    </div>
+
+    <div class="col">
+      <p class="col-title">Мы на связи</p>
+      <ul class="social">
+        <li><a href={contacts.telegram}>Telegram</a></li>
+        <li><a href={contacts.whatsapp}>WhatsApp</a></li>
+        <li><a href={contacts.vk}>VK</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container legal">
+    <p>© {year} Jagger Garage. Все права защищены.</p>
+    <p>Изображения и характеристики носят информационный характер и могут отличаться от финальной комплектации.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--c-bg-alt);
+    border-top: 1px solid var(--c-line);
+    padding-block: var(--space-lg) var(--space-md);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .brand-mark { width: 56px; height: 49px; color: var(--c-text); flex: none; }
+  .tag {
+    margin-top: var(--space-md);
+    max-width: 34ch;
+    color: var(--c-text-dim);
+    font-size: var(--fs-small);
+  }
+  .col-title {
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text-faint);
+    margin-bottom: var(--space-md);
+  }
+  .col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+  .col a, .col li { color: var(--c-text-dim); font-size: var(--fs-small); }
+  .col a:hover { color: var(--c-accent); }
+  .placeholder-note { margin-top: 0.6rem; font-size: 0.7rem; color: var(--c-text-faint); font-style: italic; }
+
+  .legal {
+    padding-top: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--c-text-faint);
+  }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .col-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

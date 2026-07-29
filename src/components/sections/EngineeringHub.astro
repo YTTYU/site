@@ -1,0 +1,451 @@
+---
+import { Image } from 'astro:assets';
+import weldImg from '../../assets/images/construction/weld-detail.png';
+import badgeImg from '../../assets/images/construction/badge-macro.png';
+import treadOffroad from '../../assets/images/tracks/tread-offroad.png';
+import treadIndustrial from '../../assets/images/tracks/tread-industrial.png';
+import suspensionImg from '../../assets/images/handling/suspension-detail.png';
+import amphibiousImg from '../../assets/images/handling/front-studio.png';
+import engineImg from '../../assets/images/transmission/engine-bay.png';
+import transportImg from '../../assets/images/transport/extended-frame.png';
+import cabinDetailImg from '../../assets/images/ergonomics/cabin-detail.png';
+import cabinSeatImg from '../../assets/images/ergonomics/cabin-seat.png';
+import hydroImg from '../../assets/images/equipment/hydro-aux-console.png';
+import drillingImg from '../../assets/images/equipment/drilling-rig.png';
+import tentImg from '../../assets/images/equipment/tent-cover.png';
+
+import {
+  construction,
+  tracks,
+  handling,
+  amphibious,
+  transmission,
+  cargo,
+  transport,
+  ergonomics,
+  equipment,
+  maintenance,
+  engineeringNav,
+} from '../../content/data/copy';
+
+const trackImages = { offroad: treadOffroad, industrial: treadIndustrial } as const;
+---
+
+<section class="engineering" id="engineering" data-section="engineering">
+  <div class="container eng-grid">
+    <aside class="eng-nav" aria-label="Навигация по характеристикам">
+      <p class="eng-nav-title">Конструктивные и эксплуатационные свойства</p>
+      <ul>
+        {engineeringNav.map((item) => (
+          <li><a href={`#eng-${item.id}`} data-eng-link={item.id}>{item.label}</a></li>
+        ))}
+      </ul>
+    </aside>
+
+    <div class="eng-content">
+      <!-- Конструктив -->
+      <article class="eng-block" id="eng-construction" data-eng-block="construction">
+        <p class="kicker" data-reveal>{construction.kicker}</p>
+        <h3 class="h3" data-reveal>{construction.title}</h3>
+        <p class="lead" data-reveal>{construction.lead}</p>
+        <div class="two-col">
+          <div>
+            {construction.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
+          </div>
+          <div class="media-stack" data-reveal>
+            <Image src={weldImg} alt="Сварной шов, точечная обработка" widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+            <Image src={badgeImg} alt="Фрезерованная эмблема Jagger Garage" widths={[400,600,900]} sizes="(max-width: 900px) 100vw, 40vw" loading="lazy" />
+          </div>
+        </div>
+      </article>
+
+      <!-- Резинокордовые гусеницы -->
+      <article class="eng-block" id="eng-tracks" data-eng-block="tracks">
+        <h3 class="h3" data-reveal>{tracks.title}</h3>
+        <p class="lead" data-reveal>{tracks.lead}</p>
+
+        <div class="segmented" role="radiogroup" aria-label="Тип гусеничного полотна" data-reveal>
+          {tracks.types.map((t, i) => (
+            <label class="segment">
+              <input type="radio" name="track-type" value={t.key} checked={i === 0} />
+              <span>{t.label}</span>
+            </label>
+          ))}
+        </div>
+
+        <div class="track-stage" data-reveal>
+          {tracks.types.map((t, i) => (
+            <Image
+              src={trackImages[t.key as keyof typeof trackImages]}
+              alt={t.label}
+              widths={[480,720,1080]}
+              sizes="(max-width: 900px) 100vw, 60vw"
+              loading="lazy"
+              class="track-img"
+              data-track={t.key}
+              style={i === 0 ? '' : 'opacity:0; visibility:hidden;'}
+            />
+          ))}
+          <div class="track-copy">
+            {tracks.types.map((t, i) => (
+              <div class="track-desc" data-track-desc={t.key} style={i === 0 ? '' : 'display:none;'}>
+                <p>{t.body}</p>
+                <p class="tag">{t.tag}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <details class="mini-accordion" data-reveal>
+          <summary><span>{tracks.advantagesTitle}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
+          <div class="accordion-body-outer"><div class="accordion-body-inner">
+            <ul class="dash-list">{tracks.advantages.map((a) => <li>{a}</li>)}</ul>
+          </div></div>
+        </details>
+      </article>
+
+      <!-- Ходовые качества -->
+      <article class="eng-block" id="eng-handling" data-eng-block="handling">
+        <h3 class="h3" data-reveal>{handling.title}</h3>
+        <div class="two-col reverse">
+          <Image src={suspensionImg} alt="Балансирная подвеска гусеничного блока" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" data-reveal />
+          <div>{handling.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
+        </div>
+      </article>
+
+      <!-- Амфибийность -->
+      <article class="eng-block" id="eng-amphibious" data-eng-block="amphibious">
+        <h3 class="h3" data-reveal>{amphibious.title}</h3>
+        <div class="two-col">
+          <div>
+            {amphibious.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
+            <p class="tag" data-reveal>{amphibious.tag}</p>
+          </div>
+          <div class="water-stage" data-reveal>
+            <Image src={amphibiousImg} alt="P-4, вид спереди" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
+            <div class="waterline" id="waterline" aria-hidden="true"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Трансмиссия -->
+      <article class="eng-block" id="eng-transmission" data-eng-block="transmission">
+        <h3 class="h3" data-reveal>{transmission.title}</h3>
+        <p class="lead" data-reveal>{transmission.lead}</p>
+        <div class="two-col">
+          <div class="spec-groups" data-reveal>
+            {transmission.groups.map((g) => (
+              <div class="spec-group">
+                <p class="spec-label">{g.label}</p>
+                <ul>{g.items.map((it) => <li>{it}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div data-reveal>
+            <Image src={engineImg} alt="Силовой агрегат Cummins в подкапотном пространстве" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" />
+            {transmission.body.map((p) => <p class="body-p small" data-reveal>{p}</p>)}
+          </div>
+        </div>
+      </article>
+
+      <!-- Перевозка грузов -->
+      <article class="eng-block" id="eng-cargo" data-eng-block="cargo">
+        <h3 class="h3" data-reveal>{cargo.title}</h3>
+        <div class="two-col">
+          <div>{cargo.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
+          <div class="capacity-card" data-reveal>
+            <p class="spec-label">{cargo.capacityTitle}</p>
+            <ul class="dash-list">{cargo.capacity.map((c) => <li>{c}</li>)}</ul>
+            <p class="tag">{cargo.tag}</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Транспортировка -->
+      <article class="eng-block" id="eng-transport" data-eng-block="transport">
+        <h3 class="h3" data-reveal>{transport.title}</h3>
+        <div class="two-col reverse">
+          <Image src={transportImg} alt="Транспортировка вездехода" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 45vw" loading="lazy" data-reveal />
+          <div>{transport.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
+        </div>
+      </article>
+
+      <!-- Эргономика -->
+      <article class="eng-block" id="eng-ergonomics" data-eng-block="ergonomics">
+        <h3 class="h3" data-reveal>{ergonomics.title}</h3>
+        <div class="media-stack two-photo" data-reveal>
+          <Image src={cabinSeatImg} alt="Кресло водителя и рулевая колонка" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 50vw" loading="lazy" />
+          <Image src={cabinDetailImg} alt="Подножка и элементы посадки в кабину" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 50vw" loading="lazy" />
+        </div>
+        <ul class="dash-list two-cols" data-reveal>
+          {ergonomics.body.map((p) => <li>{p}</li>)}
+        </ul>
+      </article>
+
+      <!-- Дополнительное оборудование -->
+      <article class="eng-block" id="eng-equipment" data-eng-block="equipment">
+        <h3 class="h3" data-reveal>{equipment.title}</h3>
+        <p class="lead" data-reveal>{equipment.lead}</p>
+
+        <div class="attach-cards" data-reveal>
+          <figure class="attach-card">
+            <Image src={hydroImg} alt="Консоль «ГИДРО AUX» в кабине" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+            <figcaption>{equipment.hydro.title}</figcaption>
+          </figure>
+          <figure class="attach-card">
+            <Image src={drillingImg} alt="P-4 с буровой установкой" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+            <figcaption>Буровая установка лёгкого класса</figcaption>
+          </figure>
+          <figure class="attach-card">
+            <Image src={tentImg} alt="P-4 с тентовым укрытием кузова" widths={[480,720,1080]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+            <figcaption>Кузов с тентовым укрытием</figcaption>
+          </figure>
+        </div>
+
+        <div class="mini-accordions" data-reveal>
+          <details class="mini-accordion">
+            <summary><span>Штатная гидросистема</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
+            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.hydro.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
+          </details>
+          <details class="mini-accordion">
+            <summary><span>{equipment.frame.lead}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
+            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.frame.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
+          </details>
+          <details class="mini-accordion">
+            <summary><span>{equipment.mounts.title}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
+            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.mounts.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
+          </details>
+          <details class="mini-accordion">
+            <summary><span>{equipment.outriggers.title}</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg></summary>
+            <div class="accordion-body-outer"><div class="accordion-body-inner"><ul class="dash-list">{equipment.outriggers.bullets.map((b) => <li>{b}</li>)}</ul></div></div>
+          </details>
+        </div>
+      </article>
+
+      <!-- Обслуживание -->
+      <article class="eng-block" id="eng-maintenance" data-eng-block="maintenance">
+        <h3 class="h3" data-reveal>{maintenance.title}</h3>
+        <p class="lead" data-reveal>{maintenance.lead}</p>
+        <div class="two-col">
+          <div>{maintenance.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}</div>
+          <div class="redundancy" data-reveal>
+            <p class="spec-label">{maintenance.redundancy.title}</p>
+            <ul class="redundancy-list">
+              {maintenance.redundancy.items.map((it) => (
+                <li><strong>{it.label}:</strong> {it.value}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div class="two-col" data-reveal>
+          <div class="mini-card">
+            <p class="spec-label">{maintenance.coldStart.title}</p>
+            <ul class="dash-list">{maintenance.coldStart.items.map((it) => <li>{it}</li>)}</ul>
+          </div>
+          <div class="mini-card">
+            <p class="spec-label">{maintenance.unification.title}</p>
+            <p class="body-p small">{maintenance.unification.body}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .eng-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .eng-nav {
+    position: sticky;
+    top: calc(var(--nav-h) + 1.5rem);
+    max-height: calc(100svh - var(--nav-h) - 3rem);
+    overflow-y: auto;
+    border-right: 1px solid var(--c-line);
+    padding-right: var(--space-md);
+  }
+  .eng-nav-title {
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text-faint);
+    margin-bottom: var(--space-md);
+    max-width: 22ch;
+  }
+  .eng-nav ul { display: flex; flex-direction: column; gap: 0.9rem; }
+  .eng-nav a {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--c-text-dim);
+    transition: color var(--dur-fast) var(--ease-out);
+    display: block;
+  }
+  .eng-nav a.active { color: var(--c-accent); }
+  .eng-nav a:hover { color: var(--c-text); }
+
+  .eng-content { display: flex; flex-direction: column; gap: calc(var(--space-section) * 0.9); }
+  .eng-block { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+
+  .h3 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: var(--fs-h3);
+    color: var(--c-light);
+    margin-bottom: 0.5em;
+  }
+  .lead { color: var(--c-text-dim); max-width: 62ch; margin-bottom: var(--space-md); }
+  .body-p { color: var(--c-text-dim); margin-bottom: 1em; max-width: 58ch; }
+  .body-p.small { font-size: var(--fs-small); }
+  .tag { font-family: var(--font-label); font-size: 0.85rem; color: var(--c-text); border-left: 2px solid var(--c-accent); padding-left: 0.8em; margin-top: 1em; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+  .two-col.reverse { grid-template-columns: 0.9fr 1.1fr; }
+  .two-col img { width: 100%; height: auto; border: 1px solid var(--c-line); }
+
+  .media-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .media-stack img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--c-line); }
+  .media-stack.two-photo { margin-bottom: var(--space-md); }
+
+  .spec-groups { display: flex; flex-direction: column; gap: 1.2em; }
+  .spec-group ul { display: flex; flex-direction: column; gap: 0.3em; margin-top: 0.4em; }
+  .spec-label { font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-faint); }
+  .spec-group li, .capacity-card li { color: var(--c-text); font-size: 0.95rem; }
+
+  .capacity-card, .mini-card {
+    border: 1px solid var(--c-line);
+    padding: var(--space-md);
+    background: var(--c-bg-panel);
+  }
+  .redundancy { border: 1px solid var(--c-line); padding: var(--space-md); background: var(--c-bg-panel); }
+  .redundancy-list { display: flex; flex-direction: column; gap: 0.8em; margin-top: 0.6em; }
+  .redundancy-list li { font-size: var(--fs-small); color: var(--c-text-dim); }
+  .redundancy-list strong { color: var(--c-text); }
+
+  .dash-list { display: flex; flex-direction: column; gap: 0.6em; }
+  .dash-list li { padding-left: 1.1em; position: relative; color: var(--c-text-dim); font-size: 0.92rem; }
+  .dash-list li::before { content: '—'; position: absolute; left: 0; color: var(--c-text-faint); }
+  .dash-list.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em 2rem; }
+
+  .segmented { display: inline-flex; border: 1px solid var(--c-line); margin-bottom: var(--space-md); }
+  .segment { position: relative; padding: 0.6em 1.2em; font-family: var(--font-label); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-dim); cursor: pointer; border-right: 1px solid var(--c-line); }
+  .segment:last-child { border-right: none; }
+  .segment input { position: absolute; opacity: 0; pointer-events: none; }
+  .segment:has(input:checked) { color: var(--c-bg); background: var(--c-accent); }
+
+  .track-stage { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-md); align-items: center; margin-bottom: var(--space-md); }
+  .track-stage { position: relative; }
+  .track-img { position: relative; width: 100%; border: 1px solid var(--c-line); transition: opacity 0.5s var(--ease-out); }
+  .track-copy p { color: var(--c-text-dim); margin-bottom: 0.8em; }
+
+  .water-stage { position: relative; overflow: hidden; border: 1px solid var(--c-line); }
+  .water-stage img { width: 100%; display: block; }
+  .waterline {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 0%;
+    background: linear-gradient(to top, rgba(79,182,255,0.55), rgba(79,182,255,0.15));
+    border-top: 2px solid rgba(79,182,255,0.8);
+  }
+
+  .attach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
+  .attach-card { border: 1px solid var(--c-line); overflow: hidden; background: var(--c-bg-panel); }
+  .attach-card img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: var(--c-surface); transition: transform var(--dur-med) var(--ease-out); }
+  .attach-card:hover img { transform: scale(1.06); }
+  .attach-card figcaption { padding: 0.8em 1em; font-size: var(--fs-small); color: var(--c-text-dim); border-top: 1px solid var(--c-line); }
+
+  .mini-accordions { display: flex; flex-direction: column; }
+  .mini-accordion { border-top: 1px solid var(--c-line); }
+  .mini-accordion:last-child { border-bottom: 1px solid var(--c-line); }
+  .mini-accordion summary {
+    list-style: none; cursor: pointer; padding: 1em 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-heading); font-weight: 700; color: var(--c-light);
+  }
+  .mini-accordion summary::-webkit-details-marker { display: none; }
+  .mini-accordion .chevron { width: 18px; height: 18px; transition: transform var(--dur-med) var(--ease-out); }
+  .mini-accordion[open] .chevron { transform: rotate(180deg); }
+  .mini-accordion .accordion-body-outer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-med) var(--ease-in-out); }
+  .mini-accordion[open] .accordion-body-outer { grid-template-rows: 1fr; }
+  .mini-accordion .accordion-body-inner { overflow: hidden; padding-bottom: 1em; }
+
+  @media (max-width: 980px) {
+    .eng-grid { grid-template-columns: 1fr; }
+    .eng-nav { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--c-line); padding-bottom: var(--space-md); padding-right: 0; }
+    .eng-nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.8rem 1.4rem; }
+    .two-col, .two-col.reverse { grid-template-columns: 1fr; }
+    .attach-cards { grid-template-columns: 1fr 1fr; }
+    .track-stage { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .attach-cards { grid-template-columns: 1fr; }
+    .dash-list.two-cols { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  import { gsap, withGsapContext } from '../../scripts/gsap/core';
+
+  function initEngineering() {
+    const section = document.querySelector('[data-section="engineering"]');
+    if (!section) return;
+
+    // Track type switcher
+    const trackInputs = section.querySelectorAll<HTMLInputElement>('input[name="track-type"]');
+    trackInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        section.querySelectorAll<HTMLElement>('.track-img').forEach((img) => {
+          const match = img.dataset.track === input.value;
+          img.style.opacity = match ? '1' : '0';
+          img.style.visibility = match ? 'visible' : 'hidden';
+        });
+        section.querySelectorAll<HTMLElement>('[data-track-desc]').forEach((el) => {
+          el.style.display = el.dataset.trackDesc === input.value ? '' : 'none';
+        });
+      });
+    });
+
+    // Scroll-spy sidebar
+    const links = section.querySelectorAll<HTMLAnchorElement>('[data-eng-link]');
+    const blocks = section.querySelectorAll<HTMLElement>('[data-eng-block]');
+    if (links.length && blocks.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const id = (entry.target as HTMLElement).dataset.engBlock;
+            links.forEach((l) => l.classList.toggle('active', l.dataset.engLink === id));
+          });
+        },
+        { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
+      );
+      blocks.forEach((b) => observer.observe(b));
+    }
+
+    // Amphibious waterline reveal, scrubbed with scroll
+    const waterline = document.getElementById('waterline');
+    if (waterline && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      withGsapContext(section, () => {
+        gsap.fromTo(
+          waterline,
+          { height: '0%' },
+          {
+            height: '62%',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: waterline.closest('.water-stage'),
+              start: 'top 75%',
+              end: 'bottom 40%',
+              scrub: true,
+            },
+          }
+        );
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', initEngineering);
+</script>

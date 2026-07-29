@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import SiteHeader from '../components/ui/SiteHeader.astro';
+import SiteFooter from '../components/ui/SiteFooter.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Jagger Garage — P-4 | Гусеничный вездеход-амфибия',
+  description = 'P-4 — гусеничный вездеход-амфибия платформа-конструктор для нефтегаза, геологоразведки, энергетики, лесной промышленности и служб реагирования. Скорость до 90 км/ч, амфибийность, грузоподъёмность до 3 т.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0b0d" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <SiteHeader />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      import { reveal } from '../scripts/gsap/core';
+
+      function boot() {
+        reveal(document);
+        window.dispatchEvent(new CustomEvent('site:sections-ready'));
+      }
+
+      document.addEventListener('astro:page-load', boot);
+      document.addEventListener('astro:after-swap', () => {
+        // sections re-init themselves on astro:page-load; this just
+        // guarantees no stale ScrollTriggers survive the swap
+      });
+    </script>
+  </body>
+</html>

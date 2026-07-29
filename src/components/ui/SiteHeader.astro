@@ -1,0 +1,181 @@
+---
+import LogoMark from './LogoMark.astro';
+
+// Nav labels are kept as verbatim headings from the source PDF wherever one
+// exists for that section, per client instruction not to reword the PDF copy.
+const links = [
+  { href: '#advantage', label: 'Гусеничное превосходство' },
+  { href: '#platform', label: 'Варианты исполнения' },
+  { href: '#engineering', label: 'Конструктивные и эксплуатационные свойства' },
+  { href: '#equipment', label: 'Дополнительное оборудование' },
+  { href: '#gallery', label: 'Галерея' },
+];
+---
+
+<header class="site-header" id="site-header">
+  <div class="container bar">
+    <a href="#top" class="brand" aria-label="Jagger Garage — на главную">
+      <LogoMark class="brand-mark" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Основная навигация">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href="#contacts" class="cta">Контакты</a>
+
+    <button class="burger" id="burger-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="nav-mobile" id="nav-mobile" aria-label="Мобильная навигация">
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: linear-gradient(to bottom, rgba(10,11,13,0.9), rgba(10,11,13,0));
+    backdrop-filter: blur(6px);
+    transition: background var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out);
+    border-bottom: 1px solid transparent;
+  }
+  .site-header.scrolled {
+    background: rgba(10,11,13,0.86);
+    border-bottom-color: var(--c-line);
+  }
+  .bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-right: auto;
+  }
+  .brand-mark {
+    width: 42px;
+    height: 37px;
+    color: var(--c-text);
+    flex: none;
+  }
+  .nav-desktop ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 1.6vw, var(--space-lg));
+  }
+  .nav-desktop a {
+    display: block;
+    max-width: 13ch;
+    font-family: var(--font-label);
+    font-size: 0.66rem;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-text-dim);
+    transition: color var(--dur-fast) var(--ease-out);
+    text-wrap: balance;
+  }
+  .nav-desktop a:hover { color: var(--c-text); }
+  .cta {
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--c-line);
+    padding: 0.6em 1.2em;
+    transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+  .cta:hover { border-color: var(--c-accent); background: var(--c-accent-dim); }
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+  }
+  .burger span {
+    display: block;
+    height: 2px;
+    background: var(--c-text);
+    transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+  }
+  .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--c-bg);
+    border-bottom: 1px solid transparent;
+    transition: max-height var(--dur-med) var(--ease-in-out), border-color var(--dur-med) var(--ease-out);
+  }
+  .nav-mobile.open {
+    max-height: 70vh;
+    border-bottom-color: var(--c-line);
+  }
+  .nav-mobile ul {
+    padding: var(--space-md) var(--content-pad) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  .nav-mobile a {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 860px) {
+    .nav-desktop, .cta { display: none; }
+    .burger { display: flex; }
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const header = document.getElementById('site-header');
+    const burger = document.getElementById('burger-toggle');
+    const mobileNav = document.getElementById('nav-mobile');
+    if (!header || !burger || !mobileNav) return;
+
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    burger.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    mobileNav.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      })
+    );
+  }
+
+  document.addEventListener('astro:page-load', initHeader);
+</script>

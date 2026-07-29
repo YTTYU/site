@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import img from '../../assets/images/advantage/outdoor-front.png';
+import { advantage } from '../../content/data/copy';
+---
+
+<section class="advantage" id="advantage" data-section="advantage">
+  <div class="wordmark" aria-hidden="true">P-4</div>
+  <div class="container grid">
+    <div class="media" data-reveal>
+      <Image
+        src={img}
+        alt="P-4 на пересечённой местности"
+        widths={[480, 720, 1080, 1440]}
+        sizes="(max-width: 900px) 100vw, 60vw"
+        quality={85}
+        loading="lazy"
+        class="photo"
+      />
+    </div>
+    <div class="copy">
+      <p class="kicker" data-reveal>{advantage.kicker}</p>
+      <h2 class="h2" data-reveal>{advantage.title}</h2>
+      {advantage.body.map((p) => <p class="lead" data-reveal>{p}</p>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .advantage {
+    position: relative;
+    overflow: clip;
+  }
+  .wordmark {
+    position: absolute;
+    top: 0.4em;
+    right: 0;
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 18vw, 16rem);
+    color: transparent;
+    -webkit-text-stroke: 1px var(--c-line);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+  .grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .media { will-change: transform; }
+  .photo { width: 100%; height: auto; border: 1px solid var(--c-line); }
+  .copy .h2 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: var(--fs-h2);
+    margin-block: 0.5em 0.7em;
+    color: var(--c-light);
+  }
+  .lead {
+    color: var(--c-text-dim);
+    max-width: 56ch;
+    margin-bottom: 1em;
+  }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  import { gsap, withGsapContext } from '../../scripts/gsap/core';
+
+  function initAdvantage() {
+    const section = document.querySelector('[data-section="advantage"]');
+    if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    withGsapContext(section, () => {
+      const media = section.querySelector('.media');
+      if (media) {
+        gsap.fromTo(
+          media,
+          { yPercent: 8, scale: 1.06 },
+          {
+            yPercent: -8,
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
+          }
+        );
+      }
+      const wordmark = section.querySelector('.wordmark');
+      if (wordmark) {
+        gsap.fromTo(
+          wordmark,
+          { xPercent: 6 },
+          {
+            xPercent: -4,
+            ease: 'none',
+            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
+          }
+        );
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initAdvantage);
+</script>
