@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
   <div class="container grid">
     <div class="col-brand">
       <a href="#top" class="brand" aria-label="Jagger Garage">
-        <LogoMark class="brand-mark" />
+        <LogoMark class="footer-brand-mark" />
       </a>
       <p class="tag">Новый класс транспортных средств высокой проходимости.</p>
     </div>
@@ -71,7 +71,7 @@ const year = new Date().getFullYear();
     align-items: center;
     gap: 0.6rem;
   }
-  .brand-mark { width: 56px; height: 49px; color: var(--c-text); flex: none; }
+  :global(.footer-brand-mark) { width: 56px; height: 49px; color: var(--c-text); flex: none; }
   .tag {
     margin-top: var(--space-md);
     max-width: 34ch;

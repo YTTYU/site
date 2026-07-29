@@ -15,7 +15,7 @@ const links = [
 <header class="site-header" id="site-header">
   <div class="container bar">
     <a href="#top" class="brand" aria-label="Jagger Garage — на главную">
-      <LogoMark class="brand-mark" />
+      <LogoMark class="header-brand-mark" />
     </a>
 
     <nav class="nav-desktop" aria-label="Основная навигация">
@@ -71,7 +71,7 @@ const links = [
     gap: 0.6rem;
     margin-right: auto;
   }
-  .brand-mark {
+  :global(.header-brand-mark) {
     width: 42px;
     height: 37px;
     color: var(--c-text);
@@ -84,7 +84,7 @@ const links = [
   }
   .nav-desktop a {
     display: block;
-    max-width: 13ch;
+    max-width: 24ch;
     font-family: var(--font-label);
     font-size: 0.66rem;
     line-height: 1.2;
