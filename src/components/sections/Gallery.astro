@@ -16,6 +16,14 @@ import certImg from '../../assets/images/trust/record-certificate.png';
     <h2 class="h2" data-reveal>{gallerySection.title}</h2>
   </div>
 
+  <div class="container mosaic">
+    {items.slice(0, 5).map((it, i) => (
+      <figure class:list={['mosaic-item', { big: i === 0 }]}>
+        <Image src={it.src} alt="Jagger Garage P-4 — производство и эксплуатация" widths={i === 0 ? [640, 960, 1440] : [400, 600, 900]} sizes={i === 0 ? '(max-width: 900px) 0px, 50vw' : '(max-width: 900px) 0px, 25vw'} loading="lazy" />
+      </figure>
+    ))}
+  </div>
+
   <div class="rail-viewport" id="rail-viewport">
     <div class="rail" id="rail">
       {items.map((it) => (
@@ -24,6 +32,13 @@ import certImg from '../../assets/images/trust/record-certificate.png';
         </figure>
       ))}
     </div>
+  </div>
+
+  <div class="lightbox" id="gallery-lightbox" aria-hidden="true">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <img src="" alt="" class="lightbox-img" id="lightbox-img" />
   </div>
 
   <div class="container">
@@ -43,7 +58,27 @@ import certImg from '../../assets/images/trust/record-certificate.png';
   .gallery-head { margin-bottom: var(--space-lg); }
   .h2 { font-family: var(--font-heading); font-weight: 900; font-size: var(--fs-h2); color: var(--c-light); margin-top: 0.3em; }
 
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 6px;
+    aspect-ratio: 21 / 8;
+    margin-bottom: var(--space-section);
+  }
+  .mosaic-item { overflow: hidden; cursor: zoom-in; }
+  .mosaic-item.big { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .mosaic-item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .mosaic-item:hover :global(img) { transform: scale(1.08); }
+
   .rail-viewport {
+    display: none;
     overflow: hidden;
     margin-bottom: var(--space-section);
   }
@@ -59,8 +94,57 @@ import certImg from '../../assets/images/trust/record-certificate.png';
     aspect-ratio: 4/3;
     border: 1px solid var(--c-line);
     overflow: hidden;
+    cursor: zoom-in;
   }
-  .rail-item :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .rail-item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .rail-item:hover :global(img) { transform: scale(1.08); }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    background: rgba(6, 7, 8, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-med) var(--ease-out);
+  }
+  .lightbox.is-open { opacity: 1; visibility: visible; }
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid var(--c-line);
+    transform: scale(0.96);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .lightbox.is-open .lightbox-img { transform: scale(1); }
+  .lightbox-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-text);
+    border: 1px solid var(--c-line);
+    background: rgba(10, 11, 13, 0.6);
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .lightbox-close:hover { border-color: var(--c-accent); color: var(--c-accent); }
+  .lightbox-close svg { width: 20px; height: 20px; }
 
   .trust-card {
     display: grid;
@@ -81,40 +165,45 @@ import certImg from '../../assets/images/trust/record-certificate.png';
     .trust-img { width: 120px; }
   }
 
-  @media (max-width: 720px) {
-    .rail-viewport { overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  @media (max-width: 900px) {
+    .mosaic { display: none; }
+    .rail-viewport { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
     .rail-item { scroll-snap-align: start; }
   }
 </style>
 
 <script>
-  import { gsap, withGsapContext } from '../../scripts/gsap/core';
-
-  function initGalleryRail() {
+  function initGalleryLightbox() {
     const section = document.querySelector('[data-section="gallery"]');
-    const viewport = document.getElementById('rail-viewport');
-    const rail = document.getElementById('rail');
-    if (!section || !viewport || !rail) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(max-width: 720px)').matches) return; // native swipe scroll on touch/small screens
+    const lightbox = document.getElementById('gallery-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    if (!section || !lightbox || !lightboxImg) return;
 
-    withGsapContext(section, () => {
-      const distance = () => Math.max(0, rail.scrollWidth - viewport.clientWidth);
-      const tween = gsap.to(rail, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: viewport,
-          start: 'top 20%',
-          end: () => `+=${distance()}`,
-          scrub: true,
-          pin: false,
-          invalidateOnRefresh: true,
-        },
-      });
-      return () => tween.kill();
+    const open = (img: HTMLImageElement) => {
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    section.querySelectorAll<HTMLImageElement>('.mosaic-item img, .rail-item img').forEach((img) => {
+      img.addEventListener('click', () => open(img));
+    });
+
+    lightbox.querySelector('[data-lightbox-close]')?.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
     });
   }
 
-  document.addEventListener('astro:page-load', initGalleryRail);
+  document.addEventListener('astro:page-load', initGalleryLightbox);
 </script>
