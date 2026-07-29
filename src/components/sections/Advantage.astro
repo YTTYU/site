@@ -1,23 +1,25 @@
 ---
 import { Image } from 'astro:assets';
-import img from '../../assets/images/advantage/outdoor-front.png';
+import img from '../../assets/images/advantage/block2-background2.png';
 import { advantage } from '../../content/data/copy';
 ---
 
 <section class="advantage section-light" id="advantage" data-section="advantage">
   <div class="wordmark" aria-hidden="true">P-4</div>
-  <div class="container grid">
-    <div class="media" data-reveal>
-      <Image
-        src={img}
-        alt="P-4 на пересечённой местности"
-        widths={[480, 720, 1080, 1440]}
-        sizes="(max-width: 900px) 100vw, 60vw"
-        quality={85}
-        loading="lazy"
-        class="photo"
-      />
-    </div>
+
+  <div class="media" data-reveal>
+    <Image
+      src={img}
+      alt="P-4 на пересечённой местности"
+      widths={[640, 960, 1440, 1920, 2400]}
+      sizes="100vw"
+      quality={90}
+      loading="lazy"
+      class="photo"
+    />
+  </div>
+
+  <div class="container copy-wrap">
     <div class="copy">
       <p class="kicker" data-reveal>{advantage.kicker}</p>
       <h2 class="h2" data-reveal>{advantage.title}</h2>
@@ -30,6 +32,10 @@ import { advantage } from '../../content/data/copy';
   .advantage {
     position: relative;
     overflow: clip;
+    background: var(--c-surface-on-light);
+    padding-block: 0;
+    display: grid;
+    grid-template-rows: minmax(480px, auto);
   }
   .wordmark {
     position: absolute;
@@ -41,20 +47,30 @@ import { advantage } from '../../content/data/copy';
     -webkit-text-stroke: 1px var(--c-line);
     line-height: 1;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     user-select: none;
   }
-  .grid {
+
+  .media {
+    grid-area: 1 / 1;
     position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: center;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
   }
-  .media { will-change: transform; }
-  .photo { width: 100%; height: auto; border: 1px solid var(--c-line); }
-  .copy .h2 {
+  .photo { width: 100%; height: 100%; object-fit: cover; object-position: 0% 50%; display: block; }
+
+  .copy-wrap {
+    grid-area: 1 / 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-lg);
+  }
+  .copy { margin-left: auto; max-width: 44ch; }
+
+  .h2 {
     font-family: var(--font-heading);
     font-weight: 900;
     font-size: var(--fs-h2);
@@ -68,7 +84,12 @@ import { advantage } from '../../content/data/copy';
   }
 
   @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr; }
+    .advantage { display: flex; flex-direction: column; grid-template-rows: none; }
+    .media { position: relative; width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    .photo { object-position: 0% 35%; }
+    .copy-wrap { padding-block: var(--space-lg); }
+    .copy { margin-left: 0; max-width: none; }
+    .wordmark { display: none; }
   }
 </style>
 
@@ -84,9 +105,9 @@ import { advantage } from '../../content/data/copy';
       if (media) {
         gsap.fromTo(
           media,
-          { yPercent: 8, scale: 1.06 },
+          { yPercent: 4, scale: 1.06 },
           {
-            yPercent: -8,
+            yPercent: -4,
             scale: 1,
             ease: 'none',
             scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: true },
