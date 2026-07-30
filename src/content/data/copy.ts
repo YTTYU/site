@@ -23,6 +23,12 @@ export const advantage = {
   ],
 };
 
+export const keyHighlights = [
+  { icon: 'gauge', value: '90', unit: 'км/ч', label: 'Скорость передвижения' },
+  { icon: 'weight', value: '3 / 2', unit: 'т', label: 'Перевозка грузов: по суше / по воде' },
+  { icon: 'users', value: '16', unit: 'чел.', label: 'Пассажировместимость' },
+];
+
 export const platformIntro = {
   id: 'platform-intro',
   kicker: 'Платформа-конструктор',

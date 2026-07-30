@@ -1,0 +1,55 @@
+---
+import { keyHighlights } from '../../content/data/copy';
+
+const icons: Record<string, string> = {
+  gauge: '<path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />',
+  weight: '<circle cx="12" cy="5" r="3" /><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z" />',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" />',
+};
+---
+
+<section class="highlights" data-section="highlights">
+  <div class="container strip">
+    {keyHighlights.map((item) => (
+      <div class="highlight">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[item.icon]} />
+        <div class="highlight-text">
+          <span class="highlight-value">{item.value}<span class="highlight-unit">{item.unit}</span></span>
+          <span class="highlight-label">{item.label}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .highlights {
+    background: var(--c-bg-panel);
+    border-block: 1px solid var(--c-line);
+    padding-block: var(--space-md);
+  }
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+  .highlight {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding-inline: var(--space-md);
+    border-left: 1px solid var(--c-line);
+  }
+  .highlight:first-child { border-left: none; padding-left: 0; }
+  .icon { width: 28px; height: 28px; flex: none; color: var(--c-accent); }
+  .highlight-text { display: flex; flex-direction: column; }
+  .highlight-value { font-family: var(--font-display); font-size: 1.6rem; color: var(--c-light); line-height: 1; }
+  .highlight-unit { font-size: 0.6em; margin-left: 0.25em; color: var(--c-accent); }
+  .highlight-label { margin-top: 0.35em; font-size: 0.78rem; color: var(--c-text-dim); max-width: 24ch; }
+
+  @media (max-width: 720px) {
+    .strip { grid-template-columns: 1fr; gap: var(--space-sm); }
+    .highlight { border-left: none; padding-left: 0; border-top: 1px solid var(--c-line); padding-top: var(--space-sm); }
+    .highlight:first-child { border-top: none; padding-top: 0; }
+  }
+</style>
