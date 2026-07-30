@@ -80,20 +80,19 @@ const links = [
   .nav-desktop ul {
     display: flex;
     align-items: center;
-    gap: clamp(0.9rem, 1.6vw, var(--space-lg));
+    gap: clamp(1.25rem, 2vw, 2.5rem);
   }
   .nav-desktop a {
     display: block;
-    max-width: 27ch;
+    white-space: nowrap;
     font-family: var(--font-label);
-    font-size: clamp(0.76rem, 0.85vw, 0.9rem);
+    font-size: clamp(0.72rem, 0.78vw, 0.82rem);
     font-weight: 700;
     line-height: 1.2;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--c-text);
     transition: color var(--dur-fast) var(--ease-out);
-    text-wrap: balance;
   }
   .nav-desktop a:hover { color: var(--c-text); }
   .cta {
