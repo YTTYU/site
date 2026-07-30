@@ -8,7 +8,7 @@ import { contacts } from '../../content/data/contacts';
       <p class="kicker" data-reveal>Контакты</p>
       <h2 class="h2" data-reveal>Готовы обсудить вашу задачу</h2>
       <p class="lead" data-reveal>
-        Оставьте заявку — подберём модификацию П-4 под ваши условия эксплуатации и ответим с расчётом сроков поставки.
+        Подберём модификацию П-4 под ваши условия эксплуатации и ответим с расчётом сроков поставки.
       </p>
 
       <ul class="contact-list" data-reveal>
@@ -21,12 +21,15 @@ import { contacts } from '../../content/data/contacts';
       )}
     </div>
 
-
+    <div class="engineer-visual" data-reveal>
+      <img src="/images/cabin-engineer.svg" alt="" class="engineer-illustration" aria-hidden="true" />
+    </div>
   </div>
 </section>
 
 <style>
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .contacts { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
+  .grid { display: grid; grid-template-columns: minmax(0, 0.43fr) minmax(0, 0.57fr); gap: clamp(1rem, 3vw, 3rem); align-items: stretch; }
   .h2 { font-family: var(--font-heading); font-weight: 900; font-size: var(--fs-h2); color: var(--c-light); margin-block: 0.4em 0.5em; }
   .lead { color: var(--c-text-dim); max-width: 48ch; margin-bottom: var(--space-lg); }
 
@@ -36,6 +39,22 @@ import { contacts } from '../../content/data/contacts';
   .contact-list a { color: var(--c-text); }
   .contact-list a:hover { color: var(--c-accent); }
   .placeholder-note { margin-top: 1em; font-size: 0.8rem; color: var(--c-text-faint); font-style: italic; }
+
+  .engineer-visual {
+    position: relative;
+    overflow: visible;
+    min-height: 470px;
+    margin-top: -1.5rem;
+    margin-right: calc(-1 * var(--content-pad));
+  }
+  .engineer-illustration {
+    position: absolute;
+    top: +1rem;
+    right: -15%;
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
 
   .contact-form {
     display: flex;
@@ -72,5 +91,7 @@ import { contacts } from '../../content/data/contacts';
 
   @media (max-width: 860px) {
     .grid { grid-template-columns: 1fr; }
+    .engineer-visual { min-height: 260px; margin-top: 0; margin-right: calc(-1 * var(--content-pad)); }
+    .engineer-illustration { width: 115%; }
   }
 </style>
