@@ -9,12 +9,22 @@ const icons: Record<string, string> = {
 ---
 
 <section class="highlights" data-section="highlights">
+  <div class="highlights-grid" aria-hidden="true"></div>
   <div class="container strip">
     {keyHighlights.map((item) => (
-      <div class="highlight">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[item.icon]} />
+      <div class="highlight" data-reveal>
+        <span class="icon-badge">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[item.icon]} />
+        </span>
         <div class="highlight-text">
-          <span class="highlight-value">{item.value}<span class="highlight-unit">{item.unit}</span></span>
+          <span class="highlight-value" data-roulette>
+            {item.value.split('').map((ch) => (
+              /\d/.test(ch)
+                ? <span class="digit" data-final={ch}>{ch}</span>
+                : <span class="digit-static">{ch}</span>
+            ))}
+            <span class="highlight-unit">{item.unit}</span>
+          </span>
           <span class="highlight-label">{item.label}</span>
         </div>
       </div>
@@ -24,28 +34,84 @@ const icons: Record<string, string> = {
 
 <style>
   .highlights {
+    position: relative;
+    overflow: hidden;
     background: var(--c-bg-panel);
-    border-block: 1px solid var(--c-line);
-    padding-block: var(--space-md);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
   }
+  .highlights::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--c-accent), transparent);
+    opacity: 0.8;
+  }
+  .highlights-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(79, 182, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79, 182, 255, 0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 70% 100% at center, #000 0%, transparent 85%);
+  }
+
   .strip {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
   .highlight {
     display: flex;
     align-items: center;
-    gap: 1em;
-    padding-inline: var(--space-md);
+    gap: 1.1em;
+    padding: 0.6em var(--space-md);
     border-left: 1px solid var(--c-line);
+    transition: transform var(--dur-med) var(--ease-out);
   }
+  .highlight:hover { transform: translateY(-3px); }
   .highlight:first-child { border-left: none; padding-left: 0; }
-  .icon { width: 28px; height: 28px; flex: none; color: var(--c-accent); }
+
+  .icon-badge {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--c-line);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--c-accent-dim), var(--c-surface) 75%);
+    box-shadow: 0 0 0 1px rgba(79, 182, 255, 0.08), 0 8px 20px -8px rgba(79, 182, 255, 0.35);
+  }
+  .icon { width: 26px; height: 26px; flex: none; color: var(--c-accent); }
+
   .highlight-text { display: flex; flex-direction: column; }
-  .highlight-value { font-family: var(--font-display); font-size: 1.6rem; color: var(--c-light); line-height: 1; }
-  .highlight-unit { font-size: 0.6em; margin-left: 0.25em; color: var(--c-accent); }
-  .highlight-label { margin-top: 0.35em; font-size: 0.78rem; color: var(--c-text-dim); max-width: 24ch; }
+  .highlight-value {
+    display: inline-flex;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 3.4vw, 2.8rem);
+    color: var(--c-light);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-shadow: 0 0 24px rgba(79, 182, 255, 0.25);
+  }
+  .digit, .digit-static { display: inline-block; min-width: 0.6ch; }
+  .digit.settled { animation: digit-flash 0.4s var(--ease-out); }
+  @keyframes digit-flash {
+    0% { color: var(--c-accent); text-shadow: 0 0 16px var(--c-accent); }
+    100% { color: var(--c-light); text-shadow: 0 0 24px rgba(79, 182, 255, 0.25); }
+  }
+  .highlight-unit { font-size: 0.5em; margin-left: 0.3em; align-self: flex-start; margin-top: 0.3em; color: var(--c-accent); }
+  .highlight-label { margin-top: 0.5em; font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 0.02em; color: var(--c-text-dim); max-width: 26ch; }
 
   @media (max-width: 720px) {
     .strip { grid-template-columns: 1fr; gap: var(--space-sm); }
@@ -53,3 +119,49 @@ const icons: Record<string, string> = {
     .highlight:first-child { border-top: none; padding-top: 0; }
   }
 </style>
+
+<script>
+  function rouletteDigit(el: HTMLElement, delay: number) {
+    const final = el.dataset.final ?? el.textContent ?? '0';
+    const duration = 650 + Math.random() * 200;
+    setTimeout(() => {
+      const start = performance.now();
+      const step = () => {
+        const elapsed = performance.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        if (progress >= 1) {
+          el.textContent = final;
+          el.classList.add('settled');
+          return;
+        }
+        el.textContent = String(Math.floor(Math.random() * 10));
+        const nextDelay = 28 + progress * 140;
+        setTimeout(step, nextDelay);
+      };
+      step();
+    }, delay);
+  }
+
+  function initHighlights() {
+    const section = document.querySelector('[data-section="highlights"]');
+    if (!section) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let played = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+          const digits = section.querySelectorAll<HTMLElement>('.digit');
+          digits.forEach((el, i) => rouletteDigit(el, i * 70));
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(section);
+  }
+
+  document.addEventListener('astro:page-load', initHighlights);
+</script>
