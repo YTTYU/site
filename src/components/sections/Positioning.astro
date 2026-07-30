@@ -1,186 +1,177 @@
 ---
-import { positioning, stats } from '../../content/data/copy';
+import { positioning } from '../../content/data/copy';
+
+const categoryIcons = ['/images/vehicle-steel-track.svg', '/images/vehicle-dump-truck.svg', '/images/vehicle-compact.svg'];
 ---
 
-<section class="positioning section-alt" data-section="positioning">
+<section class="positioning section-light" data-section="positioning">
   <div class="container">
-    <p class="kicker" data-reveal>{positioning.kicker}</p>
-    <h2 class="h2" data-reveal>{positioning.title}</h2>
-    <p class="lead" data-reveal>{positioning.intro}</p>
-
-    <div class="cards">
-      {positioning.categories.map((cat) => (
-        <details class="card" data-reveal>
-          <summary>
-            <span>{cat.title}</span>
-            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7 7 7-7"/></svg>
-          </summary>
-          <div class="accordion-body-outer">
-            <div class="accordion-body-inner">
-              <ul>
-                {cat.bullets.map((b) => <li>{b}</li>)}
-              </ul>
-            </div>
-          </div>
-        </details>
-      ))}
-
-      <div class="card card-jagger" data-reveal>
-        <p class="jagger-callout">{positioning.callout}</p>
-        <h3>{positioning.jagger.title}</h3>
-        <p class="jagger-sub">{positioning.jagger.subtitle}</p>
-        <ul>
-          {positioning.jagger.bullets.map((b) => <li>{b}</li>)}
-        </ul>
-      </div>
+    <div class="intro-panel" data-reveal>
+      <h2 class="h2">{positioning.jagger.subtitle}</h2>
+      <p class="lead">{positioning.intro}</p>
     </div>
 
-    <div class="stat-band" id="stat-band">
-      {stats.map((s) => (
-        <div class="stat" data-reveal>
-          <span class="stat-value"><span class="counter" data-target={s.value}>{s.value}</span><span class="stat-unit">{s.unit}</span></span>
-          <span class="stat-label">{s.label}</span>
+    <div class="cards">
+      {positioning.categories.map((cat, i) => (
+        <div class="card" data-reveal>
+          <div class="card-visual">
+            <h3>{cat.title}</h3>
+            <img src={categoryIcons[i]} alt="" class="card-illustration" aria-hidden="true" />
+          </div>
+          <ul>
+            {cat.bullets.map((b) => <li>{b}</li>)}
+          </ul>
         </div>
       ))}
+    </div>
+
+    <div class="jagger-panel" data-reveal>
+      <div class="jagger-visual">
+        <h3>{positioning.jagger.title}</h3>
+        <img src="/images/vehicle-jagger.svg" alt="" class="jagger-illustration" aria-hidden="true" />
+      </div>
+      <ul class="jagger-bullets">
+        {positioning.jagger.bullets.map((b) => <li>{b}</li>)}
+      </ul>
     </div>
   </div>
 </section>
 
 <style>
+  .intro-panel {
+    background: rgba(221, 221, 221, 0.62);
+    padding: var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+    margin-bottom: var(--space-md);
+  }
   .h2 {
     font-family: var(--font-heading);
     font-weight: 900;
     font-size: var(--fs-h2);
     color: var(--c-light);
-    margin-block: 0.5em 0.3em;
-    max-width: 24ch;
+    max-width: 20ch;
+    margin: 0;
   }
-  .lead { color: var(--c-text-dim); max-width: 65ch; margin-bottom: var(--space-lg); }
+  .intro-panel .lead {
+    font-family: var(--font-slab);
+    font-style: italic;
+    color: var(--c-text-dim);
+    max-width: 56ch;
+    margin: 0;
+  }
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--c-line);
-    border: 1px solid var(--c-line);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
   }
-  .card { background: var(--c-bg-alt); padding: var(--space-md); }
-  .card summary {
-    list-style: none;
-    cursor: pointer;
+  .card {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0;
+  }
+  .card-visual {
+    position: relative;
+    min-height: 210px;
+    overflow: visible;
+    padding: var(--space-md);
+    margin-bottom: 56px;
+    background: rgba(221, 221, 221, 0.62);
+  }
+  .card h3 {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 1.05rem;
     color: var(--c-light);
+    min-height: 2.6em;
+    margin-bottom: 0.8em;
   }
-  .card summary::-webkit-details-marker { display: none; }
-  .card .chevron { width: 18px; height: 18px; flex: none; transition: transform var(--dur-med) var(--ease-out); }
-  .card[open] .chevron { transform: rotate(180deg); }
-  .card .accordion-body-outer {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows var(--dur-med) var(--ease-in-out);
+  .card-illustration {
+    position: absolute;
+    z-index: 0;
+    width: 90%;
+    height: 72%;
+    right: 3%;
+    bottom: -46px;
+    object-fit: contain;
+    object-position: center bottom;
+    opacity: 0.68;
   }
-  .card[open] .accordion-body-outer { grid-template-rows: 1fr; }
-  .card .accordion-body-inner { overflow: hidden; }
-  .card ul { padding-top: 1em; display: flex; flex-direction: column; gap: 0.7em; }
-  .card li { font-size: var(--fs-small); color: var(--c-text-dim); padding-left: 1em; position: relative; }
-  .card li::before { content: '—'; position: absolute; left: 0; color: var(--c-text-faint); }
+  .card ul {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    flex: 1;
+    min-height: 126px;
+    margin: 0;
+    padding: 1rem var(--space-md);
+    background: rgba(243, 242, 239, 0.82);
+  }
+  .card li { font-size: var(--fs-small); color: var(--c-text-dim); padding-left: 1.1em; position: relative; }
+  .card li::before { content: '•'; position: absolute; left: 0; color: var(--c-text-faint); }
 
-  .card-jagger {
-    background: linear-gradient(160deg, var(--c-accent-dim), var(--c-bg-alt) 70%);
-    border-left: 2px solid var(--c-accent);
+  .jagger-panel {
+    background: transparent;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: var(--space-lg);
+    align-items: center;
   }
-  .jagger-callout {
-    font-family: var(--font-label);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--c-accent);
-    margin-bottom: 0.6em;
-  }
-  .card-jagger h3 {
+  .jagger-visual h3 {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-heading);
     font-weight: 900;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: var(--c-light);
+    max-width: 16ch;
+    margin-bottom: 1em;
   }
-  .jagger-sub { font-size: var(--fs-small); color: var(--c-text-dim); margin-block: 0.4em 1em; }
-  .card-jagger ul { display: flex; flex-direction: column; gap: 0.6em; }
-  .card-jagger li { font-size: var(--fs-small); color: var(--c-text); padding-left: 1.1em; position: relative; }
-  .card-jagger li::before { content: '✓'; position: absolute; left: 0; color: var(--c-accent); }
-
-  .stat-band {
-    margin-top: var(--space-lg);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-    border-top: 1px solid var(--c-line);
-    padding-top: var(--space-lg);
+  .jagger-visual {
+    position: relative;
+    min-height: 330px;
+    padding: var(--space-lg);
+    overflow: visible;
+    margin-bottom: 52px;
+    background: rgba(221, 221, 221, 0.62);
   }
-  .stat { text-align: left; }
-  .stat-value {
-    display: block;
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    color: var(--c-light);
-    line-height: 1;
+  .jagger-illustration {
+    position: absolute;
+    z-index: 0;
+    width: min(104%, 400px);
+    max-width: none;
+    height: auto;
+    left: 0;
+    bottom: -52px;
+    opacity: 0.72;
   }
-  .stat-unit { font-size: 0.4em; margin-left: 0.3em; color: var(--c-accent); }
-  .stat-label { display: block; margin-top: 0.5em; color: var(--c-text-dim); font-size: var(--fs-small); max-width: 24ch; }
+  .jagger-bullets {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: center;
+    gap: 0.9em;
+    padding: var(--space-lg);
+    background: rgba(221, 221, 221, 0.62);
+  }
+  .jagger-bullets li { font-size: 0.95rem; color: var(--c-text); padding-left: 1.2em; position: relative; }
+  .jagger-bullets li::before { content: '•'; position: absolute; left: 0; color: var(--c-text-faint); }
 
   @media (max-width: 1100px) {
     .cards { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
+    .intro-panel, .jagger-panel { grid-template-columns: 1fr; }
     .cards { grid-template-columns: 1fr; }
-    .stat-band { grid-template-columns: 1fr; gap: var(--space-md); }
+    .jagger-illustration { max-width: 220px; }
   }
 </style>
-
-<script>
-  import { gsap, ScrollTrigger, withGsapContext } from '../../scripts/gsap/core';
-
-  function initStatCounters() {
-    const band = document.getElementById('stat-band');
-    if (!band) return;
-
-    // Fraction values like "3 / 2" aren't meaningfully "countable" — leave the
-    // server-rendered text alone and only animate genuine single numbers.
-    // Counting starts only once the trigger actually fires, so the real SSR
-    // value stays on screen (no flash-of-zero) until the reveal begins.
-    withGsapContext(band, () => {
-      band.querySelectorAll<HTMLElement>('.counter').forEach((el) => {
-        const target = el.dataset.target ?? '';
-        if (target.includes('/')) return;
-
-        const numeric = parseFloat(target.replace(/[^0-9.]/g, ''));
-        if (Number.isNaN(numeric)) return;
-        const decimals = target.includes('.') ? 1 : 0;
-
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 85%',
-          once: true,
-          onEnter: () => {
-            const proxy = { val: 0 };
-            gsap.to(proxy, {
-              val: numeric,
-              duration: 1.6,
-              ease: 'power2.out',
-              onUpdate: () => {
-                el.textContent = proxy.val.toFixed(decimals);
-              },
-            });
-          },
-        });
-      });
-    });
-  }
-
-  document.addEventListener('astro:page-load', initStatCounters);
-</script>

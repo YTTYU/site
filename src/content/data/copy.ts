@@ -90,12 +90,6 @@ export const positioning = {
   },
 };
 
-export const stats = [
-  { value: '90', unit: 'км/ч', label: 'Скорость передвижения' },
-  { value: '3 / 2', unit: 'т', label: 'Перевозка грузов: по суше / по воде' },
-  { value: '16', unit: 'чел.', label: 'Пассажировместимость' },
-];
-
 // --- Engineering deep-dive (sidebar-navigated) ---------------------------
 
 export const construction = {

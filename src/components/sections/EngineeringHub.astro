@@ -325,7 +325,7 @@ const icons: Record<string, string> = {
         <div class="tight-gallery" data-reveal>
           {galleryPhotos.map((img, i) => (
             <div class="tight-gallery-item">
-              <Image src={img} alt={`Эргономика кабины П-4, фото ${i + 1}`} width={600} widths={[300,450,600]} sizes="(max-width: 900px) 33vw, 18vw" loading="lazy" />
+              <Image src={img} alt={`Эргономика кабины П-4, фото ${i + 1}`} width={900} widths={[300,450,600,900]} sizes="(max-width: 900px) 33vw, 18vw" loading="lazy" />
             </div>
           ))}
         </div>
@@ -333,6 +333,13 @@ const icons: Record<string, string> = {
           {ergonomics.body.map((p) => <li>{p}</li>)}
         </ul>
       </article>
+
+      <div class="eng-lightbox" id="eng-lightbox" aria-hidden="true">
+        <button type="button" class="eng-lightbox-close" data-eng-lightbox-close aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+        <img src="" alt="" class="eng-lightbox-img" id="eng-lightbox-img" />
+      </div>
 
       <!-- 9. Дополнительное оборудование -->
       <article class="eng-block" id="eng-equipment" data-eng-block="equipment">
@@ -707,9 +714,51 @@ const icons: Record<string, string> = {
 
   /* Tight hover-zoom gallery (block 8) */
   .tight-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-bottom: var(--space-lg); }
-  .tight-gallery-item { position: relative; aspect-ratio: 1; overflow: hidden; }
+  .tight-gallery-item { position: relative; aspect-ratio: 1; overflow: hidden; cursor: zoom-in; }
   .tight-gallery-item img { width: 100%; height: 100%; object-fit: cover; border: none; transition: transform var(--dur-med) var(--ease-out); }
   .tight-gallery-item:hover img { transform: scale(1.18); }
+
+  .eng-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    background: rgba(6, 7, 8, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-med) var(--ease-out);
+  }
+  .eng-lightbox.is-open { opacity: 1; visibility: visible; }
+  .eng-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid var(--c-line-dark);
+    transform: scale(0.96);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .eng-lightbox.is-open .eng-lightbox-img { transform: scale(1); }
+  .eng-lightbox-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-text-dark);
+    border: 1px solid var(--c-line-dark);
+    background: rgba(10, 11, 13, 0.6);
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .eng-lightbox-close:hover { border-color: var(--c-accent); color: var(--c-accent); }
+  .eng-lightbox-close svg { width: 20px; height: 20px; }
 
   @media (max-width: 980px) {
     .eng-grid { grid-template-columns: 1fr; }
@@ -754,6 +803,35 @@ const icons: Record<string, string> = {
         { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
       );
       blocks.forEach((b) => observer.observe(b));
+    }
+
+    // Ergonomics gallery lightbox
+    const lightbox = document.getElementById('eng-lightbox');
+    const lightboxImg = document.getElementById('eng-lightbox-img') as HTMLImageElement | null;
+    if (lightbox && lightboxImg) {
+      const open = (img: HTMLImageElement) => {
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+      const close = () => {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      section.querySelectorAll<HTMLImageElement>('.tight-gallery-item img').forEach((img) => {
+        img.addEventListener('click', () => open(img));
+      });
+      lightbox.querySelector('[data-eng-lightbox-close]')?.addEventListener('click', close);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+      });
     }
   }
 
