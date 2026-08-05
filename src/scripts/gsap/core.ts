@@ -65,4 +65,22 @@ export function reveal(root: ParentNode = document) {
   });
 }
 
+/**
+ * "Curtain" section transition: pins `outgoing` in place while `incoming`'s
+ * own scroll motion carries it up over the pinned section, covering it.
+ * Plain ScrollTrigger.create (not gsap.context) so it survives independently
+ * of any section's own withGsapContext() calls; killGsapContext() on
+ * astro:before-swap still tears it down via ScrollTrigger.getAll().
+ */
+export function curtainTransition(outgoing: Element, incoming: Element) {
+  if (reducedMotion()) return null;
+  return ScrollTrigger.create({
+    trigger: incoming,
+    start: 'top bottom',
+    end: 'top top',
+    pin: outgoing,
+    pinSpacing: false,
+  });
+}
+
 export { gsap, ScrollTrigger, SplitText, MotionPathPlugin };

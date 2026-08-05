@@ -36,10 +36,23 @@ const {
     </main>
     <SiteFooter />
     <script>
-      import { reveal } from '../scripts/gsap/core';
+      import { reveal, curtainTransition, ScrollTrigger } from '../scripts/gsap/core';
+      import { initLenis } from '../scripts/lenis';
 
       function boot() {
+        initLenis();
         reveal(document);
+
+        // Pilot: "curtain" transition where the next section slides up and
+        // covers the previous one, instead of a plain scroll cut.
+        // NOTE: chaining a 2nd curtain off the same section (advantage as
+        // both incoming and outgoing) broke ScrollTrigger's pin geometry —
+        // shipping a single transition first, see EngineeringHub follow-up.
+        const hero = document.querySelector('[data-section="hero"]');
+        const advantage = document.querySelector('[data-section="advantage"]');
+        if (hero && advantage) curtainTransition(hero, advantage);
+        window.addEventListener('load', () => ScrollTrigger.refresh());
+
         window.dispatchEvent(new CustomEvent('site:sections-ready'));
       }
 
