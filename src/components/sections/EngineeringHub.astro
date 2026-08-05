@@ -124,19 +124,50 @@ const icons: Record<string, string> = {
 ---
 
 <section class="engineering section-light" id="engineering" data-section="engineering">
+  <div class="container eng-head" data-reveal>
+    <p class="kicker">Технические решения</p>
+    <h2 class="h2">Конструктивные и эксплуатационные свойства</h2>
+  </div>
+
+  <div class="eng-ticker" aria-hidden="true">
+    <div class="eng-ticker-track">
+      {[0, 1].map(() => (
+        <span class="eng-ticker-set">
+          {engineeringNav.map((item) => <span class="eng-ticker-item">{item.label}</span>)}
+        </span>
+      ))}
+    </div>
+  </div>
+
   <div class="container eng-grid">
-    <aside class="eng-nav" aria-label="Навигация по характеристикам">
-      <p class="eng-nav-title">Конструктивные и эксплуатационные свойства</p>
+    <aside class="eng-tabs" aria-label="Навигация по характеристикам">
       <ul>
-        {engineeringNav.map((item) => (
-          <li><a href={`#eng-${item.id}`} data-eng-link={item.id}>{item.label}</a></li>
+        {engineeringNav.map((item, i) => (
+          <li>
+            <button
+              type="button"
+              class="eng-tab"
+              data-eng-tab={item.id}
+              data-eng-label={item.label}
+              aria-selected={i === 0 ? 'true' : 'false'}
+            >
+              <span class="eng-tab-index">{String(i + 1).padStart(2, '0')}</span>
+              <span class="eng-tab-label">{item.label}</span>
+            </button>
+          </li>
         ))}
       </ul>
     </aside>
 
     <div class="eng-content">
+      <div class="eng-readout" data-reveal>
+        <span class="eng-readout-index" id="eng-readout-index">01</span>
+        <span class="eng-readout-total">/ {String(engineeringNav.length).padStart(2, '0')}</span>
+        <span class="eng-readout-label" id="eng-readout-label">{engineeringNav[0].label}</span>
+      </div>
+
       <!-- 1. Конструктив -->
-      <article class="eng-block" id="eng-construction" data-eng-block="construction">
+      <article class="eng-block is-active" id="eng-construction" data-eng-block="construction">
         <p class="kicker" data-reveal>{construction.kicker}</p>
         <h3 class="h3" data-reveal>{construction.title}</h3>
         <p class="lead" data-reveal>{construction.lead}</p>
@@ -399,13 +430,51 @@ const icons: Record<string, string> = {
 </section>
 
 <style>
+  .eng-head { margin-bottom: var(--space-md); }
+  .eng-head .h2 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: var(--fs-h2);
+    color: var(--c-light);
+    max-width: 26ch;
+  }
+
+  /* Abetka-style auto-scrolling label ticker */
+  .eng-ticker {
+    overflow: hidden;
+    border-top: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
+    margin-bottom: var(--space-lg);
+    background: var(--c-surface-on-light);
+  }
+  .eng-ticker-track { display: flex; width: max-content; animation: eng-ticker-scroll 38s linear infinite; }
+  .eng-ticker-set { display: flex; align-items: center; }
+  .eng-ticker-item {
+    font-family: var(--font-slab);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--c-text-faint-on-light);
+    padding: 0.5em 1.2em;
+    white-space: nowrap;
+  }
+  .eng-ticker-item::after { content: '—'; margin-left: 1.2em; color: var(--c-accent-ink); opacity: 0.5; }
+  @keyframes eng-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eng-ticker-track { animation: none; }
+  }
+
   .eng-grid {
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: clamp(2rem, 5vw, 4rem);
     align-items: start;
   }
-  .eng-nav {
+  .eng-tabs {
     position: sticky;
     top: calc(var(--nav-h) + 1.5rem);
     max-height: calc(100svh - var(--nav-h) - 3rem);
@@ -413,28 +482,74 @@ const icons: Record<string, string> = {
     border-right: 1px solid var(--c-line);
     padding-right: var(--space-md);
   }
-  .eng-nav-title {
-    font-family: var(--font-label);
-    font-size: var(--fs-label);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--c-text-faint);
-    margin-bottom: var(--space-md);
-    max-width: 22ch;
+  .eng-tabs ul { display: flex; flex-direction: column; gap: 0.15rem; }
+  .eng-tab {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7em;
+    width: 100%;
+    padding: 0.65em 0.4em;
+    text-align: left;
+    border-left: 2px solid transparent;
+    transition: border-color var(--dur-fast) var(--ease-out), padding-left var(--dur-fast) var(--ease-out);
   }
-  .eng-nav ul { display: flex; flex-direction: column; gap: 0.9rem; }
-  .eng-nav a {
+  .eng-tab-index {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--c-text-faint);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .eng-tab-label {
     font-family: var(--font-body);
     font-size: 0.85rem;
     color: var(--c-text-dim);
     transition: color var(--dur-fast) var(--ease-out);
-    display: block;
   }
-  .eng-nav a.active { color: var(--c-accent-ink); }
-  .eng-nav a:hover { color: var(--c-text); }
+  .eng-tab:hover { padding-left: 0.7em; }
+  .eng-tab:hover .eng-tab-label { color: var(--c-text); }
+  .eng-tab.is-active { border-left-color: var(--c-accent-ink); padding-left: 0.7em; }
+  .eng-tab.is-active .eng-tab-index { color: var(--c-accent-ink); }
+  .eng-tab.is-active .eng-tab-label { color: var(--c-light); }
 
-  .eng-content { display: flex; flex-direction: column; gap: calc(var(--space-section) * 0.9); }
-  .eng-block { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+  .eng-readout {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    padding-bottom: 0.8em;
+    margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .eng-readout-index {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--c-accent-ink);
+    line-height: 1;
+  }
+  .eng-readout-total {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--c-text-faint);
+  }
+  .eng-readout-label {
+    font-family: var(--font-slab);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--c-light);
+    margin-left: 0.3em;
+  }
+
+  .eng-content { display: flex; flex-direction: column; }
+  .eng-block {
+    display: none;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .eng-block.is-active { display: block; }
+  .eng-block.is-visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .eng-block { transform: none; }
+  }
 
   .h3 {
     font-family: var(--font-heading);
@@ -538,7 +653,7 @@ const icons: Record<string, string> = {
   .advantages-media img { width: 100%; height: auto; border: 1px solid var(--c-line); }
 
   /* Tracks: reference composition — clean light field, raw track photo and two material cards */
-  #eng-tracks {
+  #eng-tracks.is-active {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(350px, 0.8fr);
     grid-template-rows: auto 1fr;
@@ -762,12 +877,24 @@ const icons: Record<string, string> = {
 
   @media (max-width: 980px) {
     .eng-grid { grid-template-columns: 1fr; }
-    .eng-nav { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--c-line); padding-bottom: var(--space-md); padding-right: 0; }
-    .eng-nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.8rem 1.4rem; }
+    .eng-tabs {
+      position: static;
+      max-height: none;
+      overflow-y: visible;
+      border-right: none;
+      border-bottom: 1px solid var(--c-line);
+      padding-bottom: var(--space-sm);
+      padding-right: 0;
+      margin-bottom: var(--space-md);
+    }
+    .eng-tabs ul { flex-direction: row; flex-wrap: wrap; gap: 0.2rem 0.6rem; }
+    .eng-tab { width: auto; padding: 0.5em 0.3em; }
+    .eng-tab:hover, .eng-tab.is-active { padding-left: 0.3em; }
+    .eng-ticker-item { font-size: 1.05rem; padding: 0.4em 0.9em; }
     .two-col, .two-col.reverse { grid-template-columns: 1fr; }
     .attach-cards { grid-template-columns: 1fr 1fr; }
     .tread-row, .advantages-row, .caption-grid { grid-template-columns: 1fr; }
-    #eng-tracks { display: block; }
+    #eng-tracks.is-active { display: block; }
     #eng-tracks > .h3 { min-height: 0; padding: 1.5rem; margin: 0; }
     #eng-tracks > .media-hero { position: relative; inset: auto; height: 420px; min-height: 0; margin-bottom: var(--space-md); }
     #eng-tracks > .tread-row { grid-template-columns: 1fr 1fr; padding: 0 0.75rem 0.75rem; margin: 0; }
@@ -782,28 +909,61 @@ const icons: Record<string, string> = {
 </style>
 
 <script>
-  import { gsap, withGsapContext } from '../../scripts/gsap/core';
+  import { reveal } from '../../scripts/gsap/core';
 
   function initEngineering() {
     const section = document.querySelector('[data-section="engineering"]');
     if (!section) return;
+    if ((section as HTMLElement).dataset.engInit === 'true') return;
+    (section as HTMLElement).dataset.engInit = 'true';
 
-    // Scroll-spy sidebar
-    const links = section.querySelectorAll<HTMLAnchorElement>('[data-eng-link]');
-    const blocks = section.querySelectorAll<HTMLElement>('[data-eng-block]');
-    if (links.length && blocks.length) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const id = (entry.target as HTMLElement).dataset.engBlock;
-            links.forEach((l) => l.classList.toggle('active', l.dataset.engLink === id));
-          });
-        },
-        { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
-      );
-      blocks.forEach((b) => observer.observe(b));
+    // Tab switcher
+    const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-eng-tab]'));
+    const blocks = Array.from(section.querySelectorAll<HTMLElement>('[data-eng-block]'));
+    const readoutIndex = document.getElementById('eng-readout-index');
+    const readoutLabel = document.getElementById('eng-readout-label');
+    const contentTop = section.querySelector<HTMLElement>('.eng-content');
+    const revealed = new Set<HTMLElement>();
+
+    function activate(id: string, scrollIntoView = false) {
+      const tabIdx = tabs.findIndex((t) => t.dataset.engTab === id);
+      if (tabIdx === -1) return;
+
+      tabs.forEach((t) => {
+        const match = t.dataset.engTab === id;
+        t.classList.toggle('is-active', match);
+        t.setAttribute('aria-selected', String(match));
+      });
+
+      blocks.forEach((b) => {
+        const match = b.dataset.engBlock === id;
+        if (match) {
+          b.classList.add('is-active');
+          b.classList.remove('is-visible');
+          void b.offsetWidth;
+          requestAnimationFrame(() => b.classList.add('is-visible'));
+          // [data-reveal] children never intersect while display:none, so their
+          // ScrollTrigger.batch never fires — (re)register once the block is shown.
+          if (!revealed.has(b)) {
+            revealed.add(b);
+            reveal(b);
+          }
+        } else {
+          b.classList.remove('is-active', 'is-visible');
+        }
+      });
+
+      if (readoutIndex) readoutIndex.textContent = String(tabIdx + 1).padStart(2, '0');
+      if (readoutLabel) readoutLabel.textContent = tabs[tabIdx].dataset.engLabel ?? '';
+
+      if (scrollIntoView && contentTop && window.innerWidth < 980) {
+        contentTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
+
+    tabs.forEach((t) => t.addEventListener('click', () => activate(t.dataset.engTab ?? '', true)));
+
+    if (blocks.length) activate(blocks[0].dataset.engBlock ?? '');
 
     // Ergonomics gallery lightbox
     const lightbox = document.getElementById('eng-lightbox');
