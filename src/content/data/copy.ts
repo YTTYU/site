@@ -340,15 +340,6 @@ export const engineeringNav = [
   maintenance,
 ].map((s) => ({ id: s.id, label: s.navLabel, title: s.title }));
 
-export const trust = {
-  id: 'trust',
-  title: 'Книга рекордов России',
-  body: 'Наибольшая скорость, развитая на льду на гусиночном вездеходе ULTRATANK на дистанции 1 миля (1,6 км)',
-  result: '125,7 км/ч',
-  holder: 'Заруцкий Константин Сергеевич',
-  place: 'озеро Байкал, село Максимиха, Баргузинского района, Республика Бурятия, 27-29 февраля 2020 года',
-};
-
 export const gallerySection = {
   id: 'gallery',
   kicker: 'Производство и эксплуатация',
