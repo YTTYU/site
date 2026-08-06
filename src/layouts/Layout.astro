@@ -37,10 +37,11 @@ const {
     <SiteFooter />
     <script>
       import { reveal, curtainTransition, ScrollTrigger } from '../scripts/gsap/core';
-      import { initLenis } from '../scripts/lenis';
+      import { initLenis, initAnchorNav } from '../scripts/lenis';
 
       function boot() {
         initLenis();
+        initAnchorNav();
         reveal(document);
 
         // Pilot: "curtain" transition where the next section slides up and

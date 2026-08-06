@@ -1,1 +1,0 @@
-import{t as e}from"./core.SyottXBU.js";function t(){e(document),window.dispatchEvent(new CustomEvent(`site:sections-ready`))}document.addEventListener(`astro:page-load`,t),document.addEventListener(`astro:after-swap`,()=>{});
