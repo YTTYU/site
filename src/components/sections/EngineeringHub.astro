@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 
 // Конструктив
-import construction1 from '../../assets/images/construction/construction-1.jpg';
+import construction1 from '../../assets/images/construction/construction-9.png';
 import construction2 from '../../assets/images/construction/construction-2.jpg';
 import construction3 from '../../assets/images/construction/construction-3.jpeg';
 import construction4 from '../../assets/images/construction/construction-4.png';
@@ -79,6 +79,8 @@ import {
 } from '../../content/data/copy';
 
 const constructionPhotos = [construction1, construction2, construction3, construction4, construction5, construction6, construction7, construction8];
+const constructionGallery = constructionPhotos.slice(1, 7);
+const constructionRowIcons = ['shield-check', 'package', 'thermometer', 'leaf', 'target'];
 const transportPhotos = [transport2, transport3, transport4, transport5];
 const galleryPhotos = [gallery34, gallery26, gallery27, gallery30, gallery31, gallery32, gallery33, gallery35, gallery36, gallery39];
 
@@ -120,6 +122,8 @@ const icons: Record<string, string> = {
   ruler: '<path d="M4 16h16M4 16v-4M8 16v-3M12 16v-4M16 16v-3M20 16v-4" />',
   'clipboard-check': '<rect width="8" height="4" x="8" y="2" rx="1" ry="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="m9 14 2 2 4-4" />',
   'door-open': '<path d="M11 20H2" /><path d="M11 4.562v16.157a1 1 0 0 0 1.242.97L19 20V5.562a2 2 0 0 0-1.515-1.94l-4-1A2 2 0 0 0 11 4.561z" /><path d="M11 4H8a2 2 0 0 0-2 2v14" /><path d="M14 12h.01" /><path d="M22 20h-3" />',
+  leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" /><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />',
+  target: '<circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />',
 };
 ---
 
@@ -167,19 +171,53 @@ const icons: Record<string, string> = {
       </div>
 
       <!-- 1. Конструктив -->
-      <article class="eng-block is-active" id="eng-construction" data-eng-block="construction">
-        <p class="kicker" data-reveal>{construction.kicker}</p>
-        <h3 class="h3" data-reveal>{construction.title}</h3>
-        <p class="lead" data-reveal>{construction.lead}</p>
-        <div class="two-col">
-          <div>
-            {construction.body.map((p) => <p class="body-p" data-reveal>{p}</p>)}
+      <article class="eng-block is-active bp-construction" id="eng-construction" data-eng-block="construction">
+        <div class="bp-hero-wrap" data-reveal>
+          <span class="bp-dim bp-dim-top" aria-hidden="true"><span class="bp-dim-value">1280</span></span>
+          <span class="bp-dim bp-dim-left" aria-hidden="true"><span class="bp-dim-value">520</span></span>
+          <div class="bp-frame bp-hero">
+            <Image src={construction1} alt="3D-сканирование покупных узлов для цифрового двойника П-4" width={1400} widths={[600, 900, 1400]} sizes="100vw" loading="lazy" class="bp-hero-img" />
+            <div class="bp-hero-overlay"></div>
+            <div class="bp-hero-content">
+              <p class="bp-eyebrow">{construction.kicker}</p>
+              <h3 class="bp-hero-title">{construction.title}</h3>
+              <p class="bp-hero-lead">{construction.lead}</p>
+            </div>
+            <span class="bp-corner bp-corner-tl" aria-hidden="true"></span>
+            <span class="bp-corner bp-corner-br" aria-hidden="true"></span>
           </div>
-          <div class="photo-grid" data-reveal>
-            {constructionPhotos.map((img, i) => (
-              <Image src={img} alt={`Производство П-4, этап ${i + 1}`} width={600} widths={[300, 450, 600]} sizes="(max-width: 900px) 50vw, 20vw" loading="lazy" />
+        </div>
+
+        <div class="bp-list-row" data-reveal>
+          <div class="bp-titleblock">
+            <span class="bp-corner bp-corner-tl small" aria-hidden="true"></span>
+            <span class="bp-corner bp-corner-br small" aria-hidden="true"></span>
+            <img src="/icons/logo-full.svg" alt="" class="bp-titleblock-logo" />
+            <p class="bp-titleblock-code">П-4</p>
+            <p class="bp-titleblock-caption">Качество в каждой детали</p>
+          </div>
+          <ul class="bp-list">
+            {construction.body.map((p, i) => (
+              <li class="bp-row">
+                <span class="bp-row-num">{String(i + 1).padStart(2, '0')}</span>
+                <p class="bp-row-text">{p}</p>
+                <span class="bp-row-icon">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={icons[constructionRowIcons[i]]} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bp-gallery-wrap" data-reveal>
+          <div class="bp-gallery">
+            {constructionGallery.map((img, i) => (
+              <div class:list={['bp-frame', 'bp-gallery-item', i % 3 === 1 ? 'cut-b' : 'cut-a']}>
+                <Image src={img} alt={`Производство П-4, этап ${i + 2}`} width={700} widths={[350, 500, 700]} sizes="(max-width: 900px) 50vw, 24vw" loading="lazy" />
+              </div>
             ))}
           </div>
+          <span class="bp-dim bp-dim-bottom" aria-hidden="true"><span class="bp-dim-value">1020</span></span>
         </div>
       </article>
 
@@ -574,6 +612,136 @@ const icons: Record<string, string> = {
   .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
   .photo-grid img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--c-line); }
   .photo-grid.two-up { grid-template-columns: repeat(2, 1fr); }
+
+  /* Конструктив — blueprint / technical-drawing composition */
+  .bp-construction { --bp-ink: var(--c-accent-ink); --bp-cut: 34px; }
+
+  .bp-frame {
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - var(--bp-cut)) 0, 100% var(--bp-cut), 100% 100%, var(--bp-cut) 100%, 0 calc(100% - var(--bp-cut)));
+    border: 1px solid var(--bp-ink);
+    overflow: hidden;
+  }
+  .bp-corner { position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 2; }
+  .bp-corner::before, .bp-corner::after { content: ''; position: absolute; background: var(--bp-ink); }
+  .bp-corner::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+  .bp-corner::after { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); }
+  .bp-corner.small { width: 11px; height: 11px; }
+  .bp-corner-tl { top: 10px; left: 10px; }
+  .bp-corner-br { bottom: 10px; right: 10px; }
+
+  .bp-hero-wrap { position: relative; padding: 2.6rem 0 0 3rem; margin-bottom: var(--space-lg); }
+  .bp-hero { min-height: 360px; }
+  .bp-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: none; }
+  .bp-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,11,13,0.88) 0%, rgba(10,11,13,0.4) 42%, rgba(10,11,13,0.02) 100%);
+  }
+  .bp-hero-content { position: relative; z-index: 1; padding: var(--space-md) var(--space-lg) var(--space-lg); max-width: 46ch; }
+  .bp-eyebrow {
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #cfe4f7;
+    margin-bottom: 0.6em;
+  }
+  .bp-hero-title {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+    color: var(--c-light-dark);
+    margin-bottom: 0.4em;
+  }
+  .bp-hero-lead { color: var(--c-text-dim-dark); max-width: 34ch; }
+
+  /* Dimension lines — CAD-style exterior measurement callouts */
+  .bp-dim { position: absolute; color: var(--bp-ink); }
+  .bp-dim::before, .bp-dim::after { content: ''; position: absolute; background: currentColor; }
+  .bp-dim-value {
+    position: absolute;
+    font-family: var(--font-label);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--bp-ink);
+    background: var(--c-bg-light);
+    padding: 0 0.4em;
+    white-space: nowrap;
+  }
+  .bp-dim-top { top: 0; left: 3rem; right: 0; height: 1px; }
+  .bp-dim-top::before { inset: 0; height: 1px; }
+  .bp-dim-top::after { display: none; }
+  .bp-dim-top .bp-dim-value { top: -0.7em; left: 50%; transform: translate(-50%, -50%); }
+  .bp-dim-left { top: 2.6rem; left: 0; bottom: 0; width: 1px; }
+  .bp-dim-left::before { inset: 0; width: 1px; }
+  .bp-dim-left::after { display: none; }
+  .bp-dim-left .bp-dim-value { top: 50%; left: -0.7em; transform: translate(-50%, -50%) rotate(-90deg); }
+  .bp-gallery-wrap { position: relative; padding-bottom: 2.2rem; }
+  .bp-dim-bottom { left: 0; right: 0; bottom: 0.6rem; height: 1px; }
+  .bp-dim-bottom::before { inset: 0; height: 1px; }
+  .bp-dim-bottom::after { display: none; }
+  .bp-dim-bottom .bp-dim-value { bottom: -0.7em; left: 50%; transform: translate(-50%, 50%); }
+
+  /* Numbered spec list + title-block card */
+  .bp-list-row { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-lg); align-items: start; margin-bottom: var(--space-lg); }
+  .bp-titleblock {
+    position: relative;
+    border: 1px solid var(--c-line);
+    background: repeating-linear-gradient(0deg, rgba(13,106,168,0.05) 0 1px, transparent 1px 22px), repeating-linear-gradient(90deg, rgba(13,106,168,0.05) 0 1px, transparent 1px 22px);
+    padding: 1.6rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.7em;
+  }
+  .bp-titleblock-logo { width: 56px; height: auto; opacity: 0.85; }
+  .bp-titleblock-code { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.04em; color: var(--c-text); }
+  .bp-titleblock-caption { font-family: var(--font-label); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text-faint); }
+
+  .bp-list { display: flex; flex-direction: column; }
+  .bp-row {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.1em 0;
+    border-bottom: 1px dashed var(--c-line);
+  }
+  .bp-row:last-child { border-bottom: none; }
+  .bp-row-num { font-family: var(--font-display); font-size: 1.5rem; color: var(--bp-ink); line-height: 1; }
+  .bp-row-text { color: var(--c-text-dim); font-size: 0.92rem; max-width: 62ch; }
+  .bp-row-icon {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border-radius: 50%;
+    border: 1px solid var(--bp-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bp-row-icon .icon { width: 19px; height: 19px; color: var(--bp-ink); }
+
+  /* Faceted photo gallery */
+  .bp-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .bp-gallery-item { aspect-ratio: 4 / 3; }
+  .bp-gallery-item img { width: 100%; height: 100%; object-fit: cover; border: none; display: block; }
+  .bp-gallery-item.cut-b { --bp-cut: 24px; }
+
+  @media (max-width: 980px) {
+    .bp-hero-wrap { padding: 2rem 0 0 2.2rem; }
+    .bp-list-row { grid-template-columns: 1fr; }
+    .bp-titleblock { flex-direction: row; justify-content: center; padding: 1rem; }
+    .bp-titleblock-caption { display: none; }
+    .bp-row { grid-template-columns: 2rem 1fr auto; gap: 0.8rem; }
+  }
+  @media (max-width: 640px) {
+    .bp-gallery { grid-template-columns: repeat(2, 1fr); }
+    .bp-row-icon { width: 34px; height: 34px; }
+    .bp-row-icon .icon { width: 15px; height: 15px; }
+  }
 
   .spec-groups { display: flex; flex-direction: column; gap: 1.2em; }
   .spec-group ul { display: flex; flex-direction: column; gap: 0.3em; margin-top: 0.4em; }
